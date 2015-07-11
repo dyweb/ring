@@ -67,13 +67,12 @@ class Upload
 
     public function doUpload($field)
     {
-        if (empty($field)) {
+        $this->fileInfo = $this->getFile($field);
+        if (is_null($this->fileInfo)) {
             $this->setError('No file selected');
             return FALSE;
         }
-
-        $this->fileInfo = $this->getFile($field);
-
+        //...
         return true;
     }
 
