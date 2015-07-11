@@ -1,94 +1,201 @@
 <?php
 
 
-namespace dyweb\ring;
+namespace Dyweb\Ring;
 
 
 class Upload
 {
-    const MAX_WIDTH = 10000;
-    const MAX_HEIGHT = 10000;
-
     protected $width = 0;
     protected $height = 0;
-    protected $sizes = [];
-    protected $path = '';
-    protected $watermark = [];
-    protected $encrypt_name = true;
-    protected $zoom_in = false;
+    protected $sizes = array();
 
-    protected $file_info = null;
+    protected $maxSize = 0;
+    protected $maxWidth = 0;
+    protected $maxHeight = 0;
 
-    public function __construct($config)
+    protected $uploadPath = '';
+    protected $textWatermark = array();
+    protected $imageWatermark = array();
+
+    protected $encryptName = true;
+    protected $zoomIn = false;
+
+    protected $errorMsg = '';
+
+    protected $fileInfo = null;
+
+
+    public function __construct($config = array())
     {
-        $this->zoom_in = isset($config['zoom_in']) and $config['zoom_in'];
+        $defaultConfig = array(
+            'width' => 0,
+            'height' => 0,
+            'sizes' => array(0, 0),
+            'maxWidth' => 0,
+            'maxHeight' => 0,
+            'maxSize' => 0,
+            'zoomIn' => false,
+            'encryptName' => true,
+            'uploadPath' => '',
+            'textWatermark' => array(
+                'text' => '',
+                'font' => 5,
+                'anchor_x' => 0,
+                'anchor_y' => 0,
+                'opacity' => 50
+            ),
+            'imageWatermark' => array(
+                'image' => '',
+                'anchor_x' => 0,
+                'anchor_y' => 0,
+                'opacity' => 50
+            ),
+        );
 
-        $this->encrypt_name = isset($config['encrypt_name']) and $config['encrypt_name'];
-
-        if (isset($config['path'])) {
-            $this->path = $config['path'];
-        }
-
-        if (isset($config['sizes']) and is_array($config['sizes']) and !empty($config['sizes'])) {
-            if (!is_array($config['sizes'][0])) {
-                if (count($config['sizes']) == 2) {
-                    $this->width = $config['sizes'][0];
-                    $this->height = $config['sizes'][1];
-                }
+        $config = array_merge($defaultConfig, $config);
+        foreach ($config as $key => $val) {
+            if (method_exists($this, 'set' . ucfirst($key))) {
+                $this->{'set' . ucfirst($key)}($val);
             } else {
-                $this->sizes = $config['sizes'];
+                $this->$key = $config[$key];
             }
-        }
-
-        if (empty($this->sizes)) {
-            if (!isset($config['width']) and isset($config['height'])) {
-                $this->width = $config['width'];
-                $this->height = $config['height'];
-            }
-        }
-
-        if (isset($config['watermark'])) {
-            $this->watermark = $config['watermark'];
         }
 
     }
 
 
-    public function do_upload($field = null)
+    public function doUpload($field)
     {
+        if (empty($field)) {
+            $this->setError('No file selected');
+            return FALSE;
+        }
 
+        $this->fileInfo = $this->getFile($field);
+
+        return true;
     }
 
-    protected function get_image($field)
+
+    /**
+     * @param $field
+     * @return array|null
+     */
+    protected function getFile($field)
     {
+        if (empty($field)) {
+            return null;
+        }
+
+        if (is_array($field)) {
+            $fileInfo = array();
+            foreach ($field as $imageField) {
+                $file = $this->getFile($imageField);
+                if ($file) {
+                    $fileInfo[] = $file;
+                }
+            }
+            return empty($fileInfo) ? null : $fileInfo;
+        }
+
         if (!is_string($field)) {
             return null;
         }
 
-        if (is_null($field)) {
-            if (empty($_FILES)) {
-                return null;
-            }
-            $images = array();
-            foreach ($_FILES as $file) {
-                if ($this->is_image($file)) {
-                    $images[] = $file;
-                }
-            }
-            return empty($images) ? null : $images;
+        $files = $this->filesInput();
+        if (isset($files[$field])) {
+            return $files[$field];
         }
 
-        if (!isset($_FILES[$field])) {
-            return null;
-        }
-
-        return $_FILES[$field];
+        return null;
     }
 
 
-    private function is_image($file)
+    /**
+     * @return mixed
+     */
+    public function filesInput()
     {
+        return $_FILES;
+    }
 
-        return true;
+
+    public function setZoomIn($bool)
+    {
+        $this->zoomIn = $bool and true;
+        return $this;
+    }
+
+    public function setEncryptName($bool)
+    {
+        $this->encryptName = $bool and true;
+        return $this;
+    }
+
+    public function setMaxWidth($width)
+    {
+        $this->maxWidth = intval($width);
+        return $this;
+    }
+
+    public function setMaxHeight($height)
+    {
+        $this->maxHeight = $height;
+        return $this;
+    }
+
+    public function setMaxSize($size)
+    {
+        $this->maxSize = $size;
+        return $this;
+    }
+
+    public function setWidth($width)
+    {
+        $this->$width = intval($width);
+        return $this;
+    }
+
+    public function setHeight($height)
+    {
+        $this->height = intval($height);
+        return $this;
+    }
+
+    public function setSizes(array $sizes)
+    {
+        $this->sizes = array();
+        if (!empty($sizes)) {
+            if (!is_array($sizes[0]) and count($sizes) === 2) {
+                $this->setWidth($sizes[0]);
+                $this->setHeight($sizes[1]);
+            } else {
+                foreach ($sizes as $desc => $size) {
+                    if (@count($size) === 2) {
+                        $this->sizes[$desc] = $size;
+                    }
+                }
+            }
+        }
+
+        return $this;
+    }
+
+    public function setUploadPath($path)
+    {
+        $this->uploadPath = rtrim($path, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
+        return $this;
+    }
+
+    public function setError($msg)
+    {
+        $this->errorMsg = $msg;
+        return $this;
+    }
+
+    public function getErrorMsg()
+    {
+        return $this->errorMsg;
     }
 }
