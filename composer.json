@@ -4,5 +4,10 @@
         "phpunit/phpunit": "~4.4",
         "squizlabs/php_codesniffer": "~2.0"
     },
-    "license": "MIT"
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Dy\\": "src/Dy/"
+        }
+    }
 }
