@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit colors="true" bootstrap="vendor/autoload.php">
+    <testsuites>
+        <testsuite name="basic">
+            <directory>./tests</directory>
+        </testsuite>
+        <!--<testsuite name="php-redis">
+            <file phpVersion="7.0.0" phpVersionOperator="&lt;=">./tests/RedisTest.php</file>
+        </testsuite>-->
+    </testsuites>
+</phpunit>
