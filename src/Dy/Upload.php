@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Dyweb\Ring;
+namespace Dy;
 
 
 class Upload
