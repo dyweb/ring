@@ -6,24 +6,70 @@ namespace Dy;
 
 class Upload
 {
+    /**
+     * @var int
+     */
     protected $width = 0;
+
+    /**
+     * @var int
+     */
     protected $height = 0;
+
+    /**
+     * @var array
+     */
     protected $ratios = array();
 
+    /**
+     * @var int
+     */
     protected $maxSize = 0;
+
+    /**
+     * @var int
+     */
     protected $maxWidth = 0;
+
+    /**
+     * @var int
+     */
     protected $maxHeight = 0;
 
+    /**
+     * @var string
+     */
     protected $uploadPath = '';
+
+    /**
+     * @var array
+     */
     protected $textWatermark = array();
+
+    /**
+     * @var array
+     */
     protected $imageWatermark = array();
 
+    /**
+     * @var bool
+     */
     protected $encryptName = true;
+
+    /**
+     * @var bool
+     */
     protected $zoomIn = false;
 
+    /**
+     * @var string
+     */
     protected $errorMsg = '';
 
-    protected $fileInfo = null;
+    /**
+     * @var array
+     */
+    protected $fileInfo = array();
 
 
     public function __construct($config = array())
