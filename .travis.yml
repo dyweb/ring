@@ -23,9 +23,6 @@ matrix:
 install:
   - composer install --no-interaction --prefer-dist
 
-before_script:
-  - if [ $PHP_VER = "5" ]; then phpenv config-add myconfig.ini; fi
-
 script:
   - phpunit
   - sh -c "./vendor/bin/phpcs --standard=PSR2 ./src/"
