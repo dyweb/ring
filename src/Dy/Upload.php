@@ -1,104 +1,50 @@
 <?php
-
+/**
+ * Created by PhpStorm.
+ * User: xsf
+ * Date: 15-7-17
+ * Time: 下午8:22
+ */
 
 namespace Dy;
 
 class Upload
 {
-    /**
-     * @var int
-     */
-    protected $width = 0;
+    private $maxSize;
 
-    /**
-     * @var int
-     */
-    protected $height = 0;
+    private $path;
 
-    /**
-     * @var array
-     */
-    protected $ratios = array();
+    private $width;
 
-    /**
-     * @var int
-     */
-    protected $maxSize = 0;
+    private $height;
 
-    /**
-     * @var int
-     */
-    protected $maxWidth = 0;
+    private $zoomIn;
 
-    /**
-     * @var int
-     */
-    protected $maxHeight = 0;
+    private $ratios;
 
-    /**
-     * @var string
-     */
-    protected $uploadPath = '';
+    private $errMsg = '';
 
-    /**
-     * @var array
-     */
-    protected $textWatermark = array();
+    private $correctOrientation = true;
 
-    /**
-     * @var array
-     */
-    protected $imageWatermark = array();
+    private $hashName = true;
 
-    /**
-     * @var bool
-     */
-    protected $encryptName = true;
+    private $overWrite = false;
 
-    /**
-     * @var bool
-     */
-    protected $zoomIn = false;
-
-    /**
-     * @var string
-     */
-    protected $errorMsg = '';
-
-    /**
-     * @var array
-     */
-    protected $fileInfo = array();
-
-
-    public function __construct($config = array())
+    public function __construct($config)
     {
-        $defaultConfig = array(
-            'width' => 0,
-            'height' => 0,
-            'ratios' => array(0, 0),
-            'maxWidth' => 0,
-            'maxHeight' => 0,
+        $dftConfig = array(
             'maxSize' => 0,
-            'zoomIn' => false,
-            'encryptName' => true,
-            'uploadPath' => '',
-            'textWatermark' => array(
-                'text' => '',
-                'font' => 5,
-                'anchor_x' => 0,
-                'anchor_y' => 0,
-                'opacity' => 50
-            ),
-            'imageWatermark' => array(
-                'image' => '',
-                'anchor_x' => 0,
-                'anchor_y' => 0,
-                'opacity' => 50
-            ),
+            'path' => '',           //必需
+            'width' => 0,           //长宽任意一个为零则不调整大小
+            'height' => 0,          //
+            'zoomIn' => true,       //调整长宽时，是否放大
+            'ratios' => array(),     //这个没用 TODO:删掉
+            'correctOrientation' => true,   //（变量名超长...)是否调整图片的方向
+            'hashName' => true,     //是否对文件名哈希
+            'overWrite' => false,   //是否覆盖同名文件
         );
 
-        $config = array_merge($defaultConfig, $config);
+        $config = array_merge($dftConfig, $config);
         foreach ($config as $key => $val) {
             if (method_exists($this, 'set' . ucfirst($key))) {
                 $this->{'set' . ucfirst($key)}($val);
@@ -107,123 +53,88 @@ class Upload
             }
         }
 
+        $maxFileSize = $this->getMaxFilesize();
+        if ($this->maxSize <= 0 or $this->maxSize > $maxFileSize) {
+            $this->maxSize = $maxFileSize;
+        }
     }
 
 
-    public function doUpload($field)
+    /**
+     * @param   string  $field
+     * @return  Image   $this|bool
+     */
+    public function uploadImage($field)
     {
-        $file = $this->getFile($field);
-        if (is_null($this->fileInfo)) {
+        $fileInfo = $this->getFileInfo($field);
+        if (is_null($fileInfo)) {
             $this->setError('No file selected');
             return false;
         }
 
-        if (!$this->isFileUploaded($file)) {
+        if ($fileInfo['size'] > $this->maxSize) {
+            $this->setError('Too large');
+            var_dump($this->maxSize);
             return false;
         }
 
-
-
-
-
-
-        return true;
-    }
-
-    protected function isFileUploaded($file)
-    {
-        if (!is_uploaded_file($file['tmp_name'])) {
-            $error = isset($file['error']) ? $file['error'] : 4;
-
-            // from CI = =
-            switch ($error) {
-                case UPLOAD_ERR_INI_SIZE:
-                    $this->setError('upload_file_exceeds_limit');
-                    break;
-                case UPLOAD_ERR_FORM_SIZE:
-                    $this->setError('upload_file_exceeds_form_limit');
-                    break;
-                case UPLOAD_ERR_PARTIAL:
-                    $this->setError('upload_file_partial');
-                    break;
-                case UPLOAD_ERR_NO_FILE:
-                    $this->setError('upload_no_file_selected');
-                    break;
-                case UPLOAD_ERR_NO_TMP_DIR:
-                    $this->setError('upload_no_temp_directory');
-                    break;
-                case UPLOAD_ERR_CANT_WRITE:
-                    $this->setError('upload_unable_to_write_file');
-                    break;
-                case UPLOAD_ERR_EXTENSION:
-                    $this->setError('upload_stopped_by_extension');
-                    break;
-                default:
-                    $this->setError('upload_no_file_selected');
-                    break;
-            }
-
+        if (strpos(strtolower($fileInfo['type']), 'image') === false) {
+            $this->setError('Not an image');
             return false;
         }
 
-        return true;
-    }
-
-    /**
-     * @param $field
-     * @return array|null
-     */
-    protected function getFile($field)
-    {
-        if (!$field) {
-            return null;
+        if (!is_dir($this->path)) {
+            $this->setError('Wrong path');
+            return false;
         }
 
-        if (!is_string($field)) {
-            return null;
+        if (!is_writable($this->path)) {
+            $this->setError('Path not writable');
+            return false;
         }
 
-        $files = $this->filesInput();
-        if (isset($files[$field])) {
-            return $files[$field];
+        $image = StdImgIo::in($fileInfo['tmp_name'])
+            ->setZoomIn($this->zoomIn)
+            ->setDstWidth($this->width)
+            ->setDstHeight($this->height)
+            ->resize();
+
+        if ($this->correctOrientation) {
+            $image->correctOrientation();
         }
 
-        return null;
+        $fileName = $fileInfo['name'];
+        if ($this->hashName) {
+            $fileName = $this->genDstName($fileName);
+        }
+        var_dump($fileName);
+
+        if (!StdImgIO::out($image, $fileName, $this->overWrite)) {
+            $this->setError('Failed to save image');
+            return false;
+        }
+
+        return $fileName;
     }
 
 
-    /**
-     * @return mixed
-     */
-    public function filesInput()
+    private function genDstName($file, $desc = '')
     {
-        return $_FILES;
+        return $this->path . DIRECTORY_SEPARATOR .
+            md5(date('YmdHis')) .
+            ($desc ? '_' . $desc : '') . '.' .
+            pathinfo($file, PATHINFO_EXTENSION);
     }
 
 
-    public function setZoomIn($bool)
+    public function setPath($path)
     {
-        $this->zoomIn = $bool and true;
+        $path = rtrim($path, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
+        $this->path = realpath($path);
+
         return $this;
     }
 
-    public function setEncryptName($bool)
-    {
-        $this->encryptName = $bool and true;
-        return $this;
-    }
-
-    public function setMaxWidth($width)
-    {
-        $this->maxWidth = intval($width);
-        return $this;
-    }
-
-    public function setMaxHeight($height)
-    {
-        $this->maxHeight = $height;
-        return $this;
-    }
 
     public function setMaxSize($size)
     {
@@ -231,11 +142,13 @@ class Upload
         return $this;
     }
 
+
     public function setWidth($width)
     {
-        $this->$width = intval($width);
+        $this->width = intval($width);
         return $this;
     }
+
 
     public function setHeight($height)
     {
@@ -243,13 +156,13 @@ class Upload
         return $this;
     }
 
+
     public function setRatios(array $ratios)
     {
         $this->ratios = array();
         if (!empty($ratios)) {
             if (!is_array($ratios[0]) and count($ratios) === 2) {
-                $this->setWidth($ratios[0]);
-                $this->setHeight($ratios[1]);
+                $this->setWidth($ratios[0])->setHeight($ratios[1]);
             } else {
                 foreach ($ratios as $desc => $ratio) {
                     if (@count($ratio) === 2) {
@@ -262,20 +175,108 @@ class Upload
         return $this;
     }
 
-    public function setUploadPath($path)
+
+    /**
+     * @param $bool
+     * @return $this
+     */
+    public function setHashName($bool)
     {
-        $this->uploadPath = rtrim($path, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
+        $this->hashName = $bool;
         return $this;
     }
 
-    public function setError($msg)
-    {
-        $this->errorMsg = $msg;
+
+    /**
+     * @param $bool
+     * @return $this
+     */
+    public function setCorrectOrientation($bool) {
+        $this->correctOrientation = $bool;
         return $this;
     }
 
-    public function getErrorMsg()
+
+    /**
+     * @param $bool
+     * @return $this
+     */
+    public function setOverWrite($bool) {
+        $this->overWrite = $bool;
+        return $this;
+    }
+
+
+    public function getError()
     {
-        return $this->errorMsg;
+        return $this->errMsg;
+    }
+
+
+    /**
+     * @param $field
+     * @return array|null
+     */
+    private function getFileInfo($field)
+    {
+        if (!$field) {
+            return null;
+        }
+
+        if (!is_string($field)) {
+            return null;
+        }
+
+        $files = $_FILES;
+        if (isset($files[$field])) {
+            return $files[$field];
+        }
+
+        return null;
+    }
+
+    private function setError($msg)
+    {
+        $this->errMsg = $msg;
+        return $this;
+    }
+
+    /**
+     * Returns the maximum size of an uploaded file as configured in php.ini.
+     *
+     * @return int The maximum size of an uploaded file in bytes
+     */
+    private static function getMaxFilesize()
+    {
+        $iniMax = strtolower(ini_get('upload_max_filesize'));
+
+        if ('' === $iniMax) {
+            return PHP_INT_MAX;
+        }
+
+        $max = ltrim($iniMax, '+');
+        if (0 === strpos($max, '0x')) {
+            $max = intval($max, 16);
+        } elseif (0 === strpos($max, '0')) {
+            $max = intval($max, 8);
+        } else {
+            $max = (int) $max;
+        }
+
+        switch (substr($iniMax, -1)) {
+            case 't':
+                $max *= 1024;
+                //no break
+            case 'g':
+                $max *= 1024;
+                //no break
+            case 'm':
+                $max *= 1024;
+                //no break
+            case 'k':
+                $max *= 1024;
+        }
+
+        return $max;
     }
 }
