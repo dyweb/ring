@@ -379,26 +379,4 @@ class Image
         }
         return true;
     }
-
-
-    /**
-     * Save the image without resizing
-     *
-     * @return bool
-     */
-    protected function saveToDst()
-    {
-        if ($this->imageType == IMAGETYPE_JPEG) {
-            $result = @imagejpeg($this->resource, $this->dstName, 100);
-        } elseif ($this->imageType == IMAGETYPE_PNG) {
-            $result = @imagepng($this->resource, $this->dstName, 0);
-        } else {
-            $this->setError('Unsupported type');
-            return false;
-        }
-        if (!$result) {
-            $this->setError('Failed to save image to "' . $this->dstName . '"');
-        }
-        return $result;
-    }
 }
