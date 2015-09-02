@@ -8,6 +8,7 @@
 
 namespace Dy;
 
+use Dy\Exception\ImageTypeException;
 use Dy\Exception\StdImgIOException;
 
 class StdImgIO
@@ -30,6 +31,7 @@ class StdImgIO
      * @param bool $overWrite
      * @return bool
      * @throws StdImgIOException
+     * @throws ImageTypeException
      */
     public static function out(Image $img, $dstName, $overWrite = true)
     {
@@ -47,7 +49,7 @@ class StdImgIO
         } elseif ($imageType == IMAGETYPE_PNG) {
             $result = @imagepng($resource, $dstName, 0);
         } else {
-            return false;
+            throw new ImageTypeException();
         }
 
         if (!$result) {
@@ -83,6 +85,7 @@ class StdImgIO
 
     /**
      * @param $fileName
+     * @throws ImageTypeException
      * @throws StdImgIOException
      * @return array
      *
@@ -98,7 +101,7 @@ class StdImgIO
         } elseif ($imageType == IMAGETYPE_PNG) {
             $resource = imagecreatefrompng($fileName);
         } else {
-            throw new StdImgIOException('Unsupported image type');
+            throw new ImageTypeException();
         }
 
         if (!is_resource($resource)) {
@@ -123,7 +126,7 @@ class StdImgIO
     {
         if (is_file($fileName)) {
             if (!is_readable($fileName)) {
-                throw new StdImgIOException("\"{$fileName}\" is not readable");
+                throw new StdImgIOException('"' .$fileName. '" is not readable');
             }
         }
 
@@ -170,28 +173,4 @@ class StdImgIO
 
         return $dstName;
     }
-
-
-//    /**
-//     * @param $dir
-//     * @return bool
-//     */
-//    protected static function makeDir($dir)
-//    {
-//        if ($dir === '/' or $dir === '.' or $dir === '') {
-//            return false;
-//        }
-//
-//        $fDir = pathinfo($dir, PATHINFO_DIRNAME);
-//        if (!is_dir($fDir)) {
-//            if (!self::makeDir($fDir)) {
-//                return false;
-//            }
-//        }
-//        if (!@mkdir($dir)) {
-//            return false;
-//        }
-//
-//        return true;
-//    }
 }

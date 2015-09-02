@@ -8,6 +8,8 @@
 
 namespace Dy;
 
+use Dy\Exception\ImageTypeException;
+
 class Upload
 {
     private $maxSize;
@@ -18,9 +20,9 @@ class Upload
 
     private $height;
 
-    private $zoomIn;
-
     private $ratios;
+
+    private $zoomIn;
 
     private $errMsg = '';
 
@@ -37,8 +39,8 @@ class Upload
             'path' => '',           //必需
             'width' => 0,           //长宽任意一个为零则不调整大小
             'height' => 0,          //
+            'ratios' => array(),
             'zoomIn' => true,       //调整长宽时，是否放大
-            'ratios' => array(),     //这个没用 TODO:删掉
             'correctOrientation' => true,   //（变量名超长...)是否调整图片的方向
             'hashName' => true,     //是否对文件名哈希
             'overWrite' => false,   //是否覆盖同名文件
@@ -74,63 +76,69 @@ class Upload
 
         if ($fileInfo['size'] > $this->maxSize) {
             $this->setError('Too large');
-            var_dump($this->maxSize);
             return false;
         }
 
         if (strpos(strtolower($fileInfo['type']), 'image') === false) {
-            $this->setError('Not an image');
+            $this->setError('Not image');
             return false;
         }
 
-        if (!is_dir($this->path)) {
-            $this->setError('Wrong path');
+        try {
+            $image = StdImgIo::in($fileInfo['tmp_name'])
+                ->setZoomIn($this->zoomIn)
+                ->setDstWidth($this->width)
+                ->setDstHeight($this->height);
+        } catch (ImageTypeException $e) {
+            $this->setError($e->getMessage());
             return false;
         }
-
-        if (!is_writable($this->path)) {
-            $this->setError('Path not writable');
-            return false;
-        }
-
-        $image = StdImgIo::in($fileInfo['tmp_name'])
-            ->setZoomIn($this->zoomIn)
-            ->setDstWidth($this->width)
-            ->setDstHeight($this->height)
-            ->resize();
 
         if ($this->correctOrientation) {
             $image->correctOrientation();
         }
 
-        $fileName = $fileInfo['name'];
-        if ($this->hashName) {
-            $fileName = $this->genDstName($fileName);
-        }
-        var_dump($fileName);
+        $file = $this->genDstName($fileInfo['name'], '', false);;
 
-        if (!StdImgIO::out($image, $fileName, $this->overWrite)) {
-            $this->setError('Failed to save image');
-            return false;
+        //当$this->ratios为空时，才使用width和height
+        if (empty($this->ratios)) {
+            $image->resize();
+            if (!StdImgIO::out($image, $file, $this->overWrite)) {
+                $this->setError('Failed to save image');
+                return false;
+            }
+        } else {
+            $fileName = $file;
+            foreach ($this->ratios as $desc => $ratio) {
+                $tmpImage = $image->copy($ratio[0], $ratio[1])->resize();
+                $fileName = $this->genDstName($fileName, $desc, true);
+                if (!StdImgIO::out($tmpImage, $fileName, $this->overWrite)) {
+                    $this->setError('Failed to save image');
+                    return false;
+                }
+            }
         }
 
-        return $fileName;
+        //返回的是没有后缀的图片名
+        return $file;
     }
 
 
-    private function genDstName($file, $desc = '')
+    private function genDstName($file, $desc = '', $hashed = false)
     {
-        return $this->path . DIRECTORY_SEPARATOR .
-            md5(date('YmdHis')) .
-            ($desc ? '_' . $desc : '') . '.' .
-            pathinfo($file, PATHINFO_EXTENSION);
+        $fileName = pathinfo($file, PATHINFO_FILENAME);
+        $extension = pathinfo($file, PATHINFO_EXTENSION);
+
+        return $this->path .
+        (($this->hashName and !$hashed) ? md5(date('YmdHis') . $file) : $fileName) .
+        ($desc ? '_' . $desc : '') . '.' .
+        $extension;
     }
 
 
     public function setPath($path)
     {
-        $path = rtrim($path, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
-        $this->path = realpath($path);
+        $this->path = rtrim($path, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
 
         return $this;
     }
@@ -157,21 +165,9 @@ class Upload
     }
 
 
-    public function setRatios(array $ratios)
+    public function setRatios($ratios)
     {
-        $this->ratios = array();
-        if (!empty($ratios)) {
-            if (!is_array($ratios[0]) and count($ratios) === 2) {
-                $this->setWidth($ratios[0])->setHeight($ratios[1]);
-            } else {
-                foreach ($ratios as $desc => $ratio) {
-                    if (@count($ratio) === 2) {
-                        $this->ratios[$desc] = $ratio;
-                    }
-                }
-            }
-        }
-
+        $this->ratios = $ratios;
         return $this;
     }
 

@@ -8,7 +8,6 @@
 
 namespace Dy\Exception;
 
-
 class StdImgIOException extends \Exception
 {
 }

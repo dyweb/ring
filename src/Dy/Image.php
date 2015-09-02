@@ -5,7 +5,9 @@
  * Date: 15-7-15
  * Time: 下午5:06
  */
+
 namespace Dy;
+
 /**
  * Class Image
  * TODO: add watermark
@@ -185,7 +187,6 @@ class Image
         );
         if ($result) {
             $this->resource = $dstResource;
-
         } else {
             $this->setError('Failed to resize');
             imagedestroy($dstResource);
@@ -194,6 +195,23 @@ class Image
         return $this;
     }
 
+
+    /**
+     *
+     * @return bool
+     */
+    public function needResize()
+    {
+        if (!$this->dstWidth or !$this->dstHeight) {
+            return false;
+        }
+        if ($this->width == $this->dstWidth and
+            $this->height == $this->dstHeight
+        ) {
+            return false;
+        }
+        return true;
+    }
 
 
     /**
@@ -359,24 +377,5 @@ class Image
     {
         $this->errMsg = $errMsg;
         return $this;
-    }
-
-
-    /**
-     * If need to resize
-     *
-     * @return bool
-     */
-    protected function needResize()
-    {
-        if (!$this->dstWidth or !$this->dstHeight) {
-            return false;
-        }
-        if ($this->width == $this->dstWidth and
-            $this->height == $this->dstHeight
-        ) {
-            return false;
-        }
-        return true;
     }
 }
