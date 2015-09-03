@@ -103,7 +103,7 @@ class Upload
         //当$this->ratios为空时，才使用width和height
         if (empty($this->ratios)) {
             $image->resize();
-            if (!StdImgIO::out($image, $file, $this->overWrite)) {
+            if (!StdImgIO::out($image, $this->path . $file, $this->overWrite)) {
                 $this->setError('Failed to save image');
                 return false;
             }
@@ -112,7 +112,7 @@ class Upload
             foreach ($this->ratios as $desc => $ratio) {
                 $tmpImage = $image->copy($ratio[0], $ratio[1])->resize();
                 $fileName = $this->genDstName($fileName, $desc, true);
-                if (!StdImgIO::out($tmpImage, $fileName, $this->overWrite)) {
+                if (!StdImgIO::out($tmpImage,  $this->path . $fileName, $this->overWrite)) {
                     $this->setError('Failed to save image');
                     return false;
                 }
@@ -129,8 +129,7 @@ class Upload
         $fileName = pathinfo($file, PATHINFO_FILENAME);
         $extension = pathinfo($file, PATHINFO_EXTENSION);
 
-        return $this->path .
-        (($this->hashName and !$hashed) ? md5(date('YmdHis') . $file) : $fileName) .
+        return (($this->hashName and !$hashed) ? md5(date('YmdHis') . $file) : $fileName) .
         ($desc ? '_' . $desc : '') . '.' .
         $extension;
     }
