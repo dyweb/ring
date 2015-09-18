@@ -8,12 +8,15 @@
 
 namespace Dy\Ring;
 
+use Dy\Ring\FileSrc\FileSrc;
+
 class File
 {
-    public function __construct($filePath, Rule $rule)
+    public function __construct(FileSrc $src, Rule $rule)
     {
-        // TODO: instanceof
+
     }
+
 
     public function check()
     {
