@@ -12,6 +12,6 @@ use Dy\Ring\File;
 
 abstract class Backend
 {
-    public abstract function setBasePath($basePath);
-    public abstract function save(File $file);
+    abstract public function setBasePath($basePath);
+    abstract public function save(File $file);
 }

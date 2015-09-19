@@ -8,7 +8,6 @@
 
 namespace Dy\Ring\Exception\FileSrc;
 
-
 class NoFileUploadedException extends \Exception
 {
     public function __construct($filed)

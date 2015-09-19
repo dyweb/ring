@@ -8,7 +8,6 @@
 
 namespace Dy\Ring\Exception\FileSrc;
 
-
 class FileNotReadableException extends \Exception
 {
     public function __construct($filePath)

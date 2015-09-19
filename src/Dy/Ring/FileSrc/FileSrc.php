@@ -65,14 +65,14 @@ abstract class FileSrc
      *
      * @return string
      */
-    public abstract function getFileName();
+    abstract public function getFileName();
 
     /**
      * get file source path
      *
      * @return string
      */
-    public abstract function getFilePath();
+    abstract public function getFilePath();
 
 
     /**
@@ -80,7 +80,7 @@ abstract class FileSrc
      *
      * @return int
      */
-    public abstract function getFileSize();
+    abstract public function getFileSize();
 
 
     /**
@@ -88,7 +88,7 @@ abstract class FileSrc
      *
      * @return string
      */
-    public abstract function getMimeType();
+    abstract public function getMimeType();
 
 
     /**
@@ -206,16 +206,16 @@ abstract class FileSrc
     protected function createResource($filePath)
     {
         switch ($this->imageType) {
-            case IMAGETYPE_JPEG :
+            case IMAGETYPE_JPEG:
                 $resource = @imagecreatefromjpeg($filePath);
                 break;
-            case IMAGETYPE_PNG :
+            case IMAGETYPE_PNG:
                 $resource = @imagecreatefrompng($filePath);
                 break;
-            case IMAGETYPE_GIF :
+            case IMAGETYPE_GIF:
                 $resource = @imagecreatefromgif($filePath);
                 break;
-            default :
+            default:
                 throw new UnsupportedImageTypeException(image_type_to_mime_type($this->imageType));
         }
 
