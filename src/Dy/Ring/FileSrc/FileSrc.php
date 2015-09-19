@@ -154,7 +154,7 @@ abstract class FileSrc
      * @throws UnsupportedImageTypeException
      * @throws \Exception
      */
-    protected function isImage()
+    public function isImage()
     {
         if (is_null($this->isImage)) {
             if (strpos($this->getMimeType(), 'image') === false) {
