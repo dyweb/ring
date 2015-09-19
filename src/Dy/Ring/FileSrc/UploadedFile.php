@@ -10,29 +10,8 @@ namespace Dy\Ring\FileSrc;
 
 use Dy\Ring\Exception\FileSrc\NoFileUploadedException;
 
-class FormUploadFs extends FileSrc
+class UploadedFile extends FileSrc
 {
-    /**
-     * @var string
-     */
-    protected $fileName;
-
-    /**
-     * @var string
-     */
-    protected $filePath;
-
-    /**
-     * @var int
-     */
-    protected $fileSize;
-
-    /**
-     * @var string
-     */
-    protected $mimeType;
-
-
     /**
      *
      * @param  string $field

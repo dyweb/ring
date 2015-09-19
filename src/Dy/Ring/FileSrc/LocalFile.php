@@ -9,36 +9,27 @@
 namespace Dy\Ring\FileSrc;
 
 use Dy\Ring\Exception\FileSrc\FailedOpenFileException;
+use Dy\Ring\Exception\FileSrc\FileNotExistException;
+use Dy\Ring\Exception\FileSrc\FileNotReadableException;
 
-class LocalFs extends FileSrc
+class LocalFile extends FileSrc
 {
     /**
-     * @var string
-     */
-    protected $fileName;
-
-    /**
-     * @var string
-     */
-    private $filePath;
-
-    /**
-     * @var
-     */
-    private $fileSize;
-
-    /**
-     * @var string
-     */
-    private $mimeType;
-
-
-    /**
-     * @param string $filePath
+     * @param $filePath
+     * @throws FileNotExistException
+     * @throws FileNotReadableException
      */
     public function __construct($filePath)
     {
-        $this->filePath = $filePath;
+        $this->filePath = realpath($filePath);
+
+        if (!$this->filePath) {
+            throw new FileNotExistException($filePath);
+        }
+
+        if (!is_readable($this->filePath)) {
+            throw new FileNotReadableException($filePath);
+        }
     }
 
 
@@ -88,7 +79,7 @@ class LocalFs extends FileSrc
      */
     public function getMimeType()
     {
-        $info = finfo_open(FILEINFO_MIME_TYPE, $this->filePath);
+        $info = finfo_open(FILEINFO_MIME_TYPE);
 
         $this->mimeType = @finfo_file($info, $this->filePath);
 
