@@ -106,7 +106,7 @@ abstract class FileSrc
             return $this->resource;
         }
 
-        return null;
+        throw new NotImageException($this->getFilePath());
     }
 
 
@@ -164,7 +164,7 @@ abstract class FileSrc
             }
         }
 
-        throw new NotImageException($this->getFilePath());
+        return $this->isImage;
     }
 
 

@@ -8,22 +8,23 @@
 
 class LocalFileTest extends PHPUnit_Framework_TestCase
 {
-    private $filePath = '/home/xsf/Pictures/desktop/grass.jpg';
-
-
     public function testGetFileName()
     {
-        $image = new \Dy\Ring\FileSrc\LocalFile($this->filePath);
+        $filePath = __DIR__ . '/images/test1.png';
+
+        $image = new \Dy\Ring\FileSrc\LocalFile($filePath);
 
         $fileName = $image->getFileName();
 
-        $this->assertEquals(pathinfo($this->filePath, PATHINFO_BASENAME), $fileName);
+        $this->assertEquals(pathinfo($filePath, PATHINFO_BASENAME), $fileName);
     }
 
 
     public function testGetResource()
     {
-        $image = new \Dy\Ring\FileSrc\LocalFile($this->filePath);
+        $filePath = __DIR__ . '/images/test1.png';
+
+        $image = new \Dy\Ring\FileSrc\LocalFile($filePath);
 
         try {
             $resource = $image->getResource();
