@@ -57,7 +57,7 @@ abstract class FileSrc
     /**
      * @var int
      */
-    protected $imageType;
+    protected $imageType = null;
 
 
     /**
@@ -142,6 +142,26 @@ abstract class FileSrc
                 $this->openImage();
             }
             return $this->height;
+        }
+
+        throw new NotImageException($this->getFilePath());
+    }
+
+
+    /**
+     * @return int
+     * @throws FailedOpenImageException
+     * @throws NotImageException
+     * @throws UnsupportedImageTypeException
+     * @throws \Exception
+     */
+    public function getImageType()
+    {
+        if ($this->isImage()) {
+            if (is_null($this->imageType)) {
+                $this->openImage();
+            }
+            return $this->imageType;
         }
 
         throw new NotImageException($this->getFilePath());

@@ -62,6 +62,42 @@ class ImageRule extends Rule
 
 
     /**
+     * @return bool
+     */
+    public function needInterlaceJpeg()
+    {
+        return $this->interlaceJpeg;
+    }
+
+
+    /**
+     * @return bool
+     */
+    public function needRotate()
+    {
+        return $this->correctOrientation;
+    }
+
+
+    /**
+     * @return int
+     */
+    public function getDstWidth()
+    {
+        return $this->dstWidth;
+    }
+
+
+    /**
+     * @return int
+     */
+    public function getDstHeight()
+    {
+        return $this->dstHeight;
+    }
+
+
+    /**
      * @param int $width
      * @return $this
      */

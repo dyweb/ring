@@ -11,6 +11,10 @@ namespace Dy\Ring;
 use Dy\Ring\Exception\FileTooLargeException;
 use Dy\Ring\FileSrc\FileSrc;
 
+/**
+ * Class File
+ * @package Dy\Ring
+ */
 class File
 {
     /**
@@ -24,14 +28,23 @@ class File
     protected $rule;
 
     /**
+     * filename without extension
+     *
      * @var string
      */
     protected $fileName = null;
 
     /**
+     * file extension
+     *
      * @var string
      */
     protected $fileExtension = null;
+
+    /**
+     * @var bool
+     */
+    protected $isValid = null;
 
     /**
      * @param FileSrc $src
@@ -43,39 +56,38 @@ class File
         $this->src = $src;
         $this->rule = $rule;
 
-        $this->check();
+        $this->getFileName();
+        $this->getFileExtension();
     }
 
 
     /**
      * TODO: MIME check
      *
+     * @return true
      * @throws FileTooLargeException
      */
     public function check()
     {
+        if ($this->isValid) {
+            return;
+        }
         $srcSize = $this->src->getFileSize();
         if (!$this->rule->isValidSize($srcSize)) {
             throw new FileTooLargeException($srcSize);
         }
-    }
 
-
-    public function process()
-    {
-        $this->fileName = $this->rule->makeFileName($this->getFileName());
-
-        $this->getFileExtension();
+        $this->isValid = true;
     }
 
 
     /**
-     * @return mixed|string
+     * @return string
      */
     public function getFileName()
     {
         if (is_null($this->fileName)) {
-            $this->fileName = pathinfo($this->src->getFileName(), PATHINFO_FILENAME);
+            $this->fileName = $this->rule->makeFileName(pathinfo($this->src->getFileName(), PATHINFO_FILENAME));
         }
 
         return $this->fileName;
