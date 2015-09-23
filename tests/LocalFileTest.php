@@ -110,6 +110,9 @@ class LocalFileTest extends PHPUnit_Framework_TestCase
             } else {
                 $isImage = false;
             }
+            if ($isImage !== $this->files[$i]->isImage()) {
+                echo $this->filePaths[$i];
+            }
             $this->assertEquals(
                 $isImage,
                 $this->files[$i]->isImage()
