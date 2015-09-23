@@ -40,6 +40,7 @@ class LocalFile extends FileSrc
     {
         if (!$this->fileName) {
             $this->fileName = pathinfo($this->filePath, PATHINFO_BASENAME);
+            $this->fileName = static::filterFileName($this->fileName);
         }
 
         return $this->fileName;

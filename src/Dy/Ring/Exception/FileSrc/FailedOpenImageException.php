@@ -12,6 +12,6 @@ class FailedOpenImageException extends \Exception
 {
     public function __construct($filePath)
     {
-        parent::__construct('Failed to open image: "' . '"');
+        parent::__construct('Failed to open image: "' . $filePath . '"');
     }
 }

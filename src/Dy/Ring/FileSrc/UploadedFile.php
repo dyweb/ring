@@ -25,7 +25,7 @@ class UploadedFile extends FileSrc
 
         $fileInfo = $_FILES[$field];
 
-        $this->fileName = $fileInfo['name'];
+        $this->fileName = static::filterFileName(pathinfo($fileInfo['name'], PATHINFO_BASENAME));
         $this->filePath = $fileInfo['tmp_name'];
         $this->fileSize = intval($fileInfo['size']);
         $this->mimeType = $fileInfo['type'];

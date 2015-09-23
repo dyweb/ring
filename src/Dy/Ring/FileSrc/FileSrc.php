@@ -198,6 +198,7 @@ abstract class FileSrc
         $filePath = $this->getFilePath();
 
         $imageInfo = @getimagesize($filePath);
+
         if (!$imageInfo) {
             throw new FailedOpenImageException($filePath);
         }
@@ -244,5 +245,15 @@ abstract class FileSrc
         }
 
         return $resource;
+    }
+
+
+    /**
+     * @param string $fileName
+     * @return mixed
+     */
+    public static function filterFileName($fileName)
+    {
+        return str_replace(array('/', "\\", '-', ' '), '_', $fileName);
     }
 }
