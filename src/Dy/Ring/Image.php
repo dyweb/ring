@@ -9,6 +9,7 @@
 namespace Dy\Ring;
 
 use Dy\Ring\Exception\FileSrc\NotImageException;
+use Dy\Ring\Exception\FileSrc\UnsupportedImageTypeException;
 use Dy\Ring\Exception\FileTooLargeException;
 use Dy\Ring\Exception\FunctionNotExistException;
 use Dy\Ring\FileSrc\FileSrc;
@@ -74,7 +75,7 @@ class Image extends File
             throw $e;
         }
 
-        if (!$this->src->isImage()) {
+        if (!$this->isImage()) {
             throw new NotImageException($this->src->getFilePath());
         }
 
@@ -245,5 +246,40 @@ class Image extends File
         }
 
         return $this;
+    }
+
+
+    /**
+     * @param $dst
+     * @return bool
+     * @throws FileTooLargeException
+     * @throws NotImageException
+     * @throws UnsupportedImageTypeException
+     * @throws \Exception
+     */
+    public function copyTo($dst)
+    {
+        $this->check();
+
+        $imageType = $this->src->getImageType();
+        switch ($imageType) {
+            case IMAGETYPE_JPEG:
+                $result = @imagejpeg($this->resource, $dst, 100);
+                break;
+            case IMAGETYPE_PNG:
+                $result = @imagepng($this->resource, $dst, 0);
+                break;
+            case IMAGETYPE_GIF:
+                $result = @imagegif($this->resource, $dst);
+                break;
+            default :
+                throw new UnsupportedImageTypeException($this->src->getFilePath());
+        }
+
+        if (!$result) {
+            return false;
+        }
+
+        return true;
     }
 }
