@@ -8,11 +8,16 @@
 
 namespace Dy\Ring;
 
+/**
+ * Class ImageRule
+ * @package Dy\Ring
+ */
 class ImageRule extends Rule
 {
     /**
      * the width of image after scaling
      * if $dstWidth or $dstHeight equals 0, the image will not be scaled
+     *
      * @var int
      */
     protected $dstWidth = 0;
@@ -20,18 +25,21 @@ class ImageRule extends Rule
     /**
      * the height of image after scaling
      * if $dstWidth or $dstHeight equals 0, the image will not be scaled
+     *
      * @var int
      */
     protected $dstHeight = 0;
 
     /**
      * interlace JPEG if possible
+     *
      * @var bool
      */
     protected $interlaceJpeg = false;
 
     /**
      * if make image orientation correctly
+     *
      * @var bool
      */
     protected $correctOrientation = false;
@@ -42,13 +50,7 @@ class ImageRule extends Rule
      */
     public function __construct($config = array())
     {
-        if (!empty($config)) {
-            foreach ($config as $key => $val) {
-                if (method_exists($this, 'set' . ucfirst($key))) {
-                    $this->{'set' . ucfirst($key)}($val);
-                }
-            }
-        }
+        parent::__construct($config);
     }
 
 

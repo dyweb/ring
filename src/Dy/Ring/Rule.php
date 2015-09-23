@@ -8,6 +8,10 @@
 
 namespace Dy\Ring;
 
+/**
+ * Class Rule
+ * @package Dy\Ring
+ */
 class Rule
 {
     /**
@@ -57,10 +61,6 @@ class Rule
                     $this->{'set' . ucfirst($key)}($val);
                 }
             }
-        }
-
-        if (!$this->maxSize) {
-            $this->setMaxSize(0);
         }
     }
 
