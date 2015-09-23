@@ -14,35 +14,6 @@ class TestFiles
     protected static $files = null;
 
 
-    public static function init()
-    {
-        if (is_null(static::$files)) {
-            static::$files = array(
-                'image' => array(
-                    'normal.jpg',
-                    'normal.png',
-                    'normal.gif'
-                ),
-                'notExist' => array(
-                    'notExist'
-                ),
-                'notImage' => array(
-                    'notImage.bin'
-                ),
-                'notOpenImage' => array(
-                    'notOpenImage'
-                ),
-                'unsupportedImage' => array(
-
-                ),
-                'notReadable' => array(
-                    'notReadable'
-                )
-            );
-        }
-    }
-
-
     public static function get()
     {
         if (is_null(static::$files)) {
