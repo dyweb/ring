@@ -272,7 +272,7 @@ class Image extends File
             case IMAGETYPE_GIF:
                 $result = @imagegif($this->resource, $dst);
                 break;
-            default :
+            default:
                 throw new UnsupportedImageTypeException($this->src->getFilePath());
         }
 
