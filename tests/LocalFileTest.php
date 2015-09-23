@@ -104,12 +104,7 @@ class LocalFileTest extends PHPUnit_Framework_TestCase
     public function testIsImage()
     {
         foreach (range(0, count($this->files) - 1) as $i) {
-            if (strpos($this->filePaths[$i], 'normal') !== false
-                or strpos($this->filePaths[$i], 'notOpenImage') !== false) {
-                $isImage = true;
-            } else {
-                $isImage = false;
-            }
+            $isImage = (strpos($this->getMimeType($this->filePaths[$i]), 'image') !== false);
             if ($isImage !== $this->files[$i]->isImage()) {
                 echo $this->filePaths[$i];
             }

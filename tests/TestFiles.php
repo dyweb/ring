@@ -25,7 +25,7 @@ class TestFiles
                 'notImage.bin',
                 'notOpenImage',
 //                'unsupportedImage.xbm',
-                'notReadable'
+//                'notReadable'     //hard to test notReadable
             );
 
             foreach (static::$files as &$file) {
