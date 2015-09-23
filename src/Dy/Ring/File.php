@@ -42,6 +42,11 @@ class File
     protected $fileExtension = null;
 
     /**
+     * @var string
+     */
+    protected $baseName = null;
+
+    /**
      * @var bool
      */
     protected $isValid = null;
@@ -82,6 +87,8 @@ class File
 
 
     /**
+     * file name without extension
+     *
      * @return string
      */
     public function getFileName()
@@ -95,7 +102,25 @@ class File
 
 
     /**
-     * @return mixed|string
+     * @param string $fileName
+     * @return $this
+     */
+    public function setFileName($fileName)
+    {
+        $this->fileName = $fileName;
+
+        if (!is_null($this->baseName)) {
+            $this->baseName = $this->fileName . '.' . $this->fileExtension;
+        }
+
+        return $this;
+    }
+
+
+    /**
+     * file extension
+     *
+     * @return string
      */
     public function getFileExtension()
     {
@@ -104,5 +129,45 @@ class File
         }
 
         return $this->fileExtension;
+    }
+
+
+    /**
+     * file name with extension
+     *
+     * @return string
+     */
+    public function getBaseName()
+    {
+        if (is_null($this->baseName)) {
+            $this->baseName = $this->fileName . '.' . $this->fileExtension;
+        }
+
+        return $this->baseName;
+    }
+
+
+    /**
+     * @return bool
+     */
+    public function isImage()
+    {
+        return $this->src->isImage();
+    }
+
+
+    /**
+     * @param $dst
+     * @return bool
+     */
+    public function copyTo($dst)
+    {
+        $result = @copy($this->src->getFilePath(), $dst);
+
+        if (!$result) {
+            return false;
+        }
+
+        return true;
     }
 }
