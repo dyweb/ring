@@ -8,6 +8,7 @@
 
 namespace Dy\Ring;
 
+use Dy\Ring\Exception\CopyFileFailedException;
 use Dy\Ring\Exception\FileSrc\NotImageException;
 use Dy\Ring\Exception\FileSrc\UnsupportedImageTypeException;
 use Dy\Ring\Exception\FileTooLargeException;
@@ -252,6 +253,7 @@ class Image extends File
     /**
      * @param $dst
      * @return bool
+     * @throws CopyFileFailedException
      * @throws FileTooLargeException
      * @throws NotImageException
      * @throws UnsupportedImageTypeException
@@ -277,7 +279,7 @@ class Image extends File
         }
 
         if (!$result) {
-            return false;
+            throw new CopyFileFailedException($this->src->getFilePath());
         }
 
         return true;

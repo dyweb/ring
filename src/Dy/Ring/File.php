@@ -8,6 +8,7 @@
 
 namespace Dy\Ring;
 
+use Dy\Ring\Exception\CopyFileFailedException;
 use Dy\Ring\Exception\FileTooLargeException;
 use Dy\Ring\FileSrc\FileSrc;
 
@@ -54,7 +55,6 @@ class File
     /**
      * @param FileSrc $src
      * @param Rule $rule
-     * @throws FileTooLargeException
      */
     public function __construct(FileSrc $src, Rule $rule)
     {
@@ -159,13 +159,14 @@ class File
     /**
      * @param $dst
      * @return bool
+     * @throws CopyFileFailedException
      */
     public function copyTo($dst)
     {
         $result = @copy($this->src->getFilePath(), $dst);
 
         if (!$result) {
-            return false;
+            throw new CopyFileFailedException($this->src->getFilePath());
         }
 
         return true;

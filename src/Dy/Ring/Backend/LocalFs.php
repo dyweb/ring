@@ -8,6 +8,7 @@
 
 namespace Dy\Ring\Backend;
 
+use Dy\Ring\Exception\CopyFileFailedException;
 use Dy\Ring\Exception\DirectoryNotExistException;
 use Dy\Ring\Exception\DirectoryNotWritableException;
 use Dy\Ring\Exception\FileSaveFailedException;
@@ -60,6 +61,7 @@ class LocalFs extends Backend
 
     /**
      * @param File $file
+     * @throws CopyFileFailedException
      * @throws FileSaveFailedException
      * @throws \Exception
      */
@@ -88,7 +90,7 @@ class LocalFs extends Backend
 
         try {
             $result = $file->copyTo($fullName);
-        } catch (\Exception $e) {
+        } catch (CopyFileFailedException $e) {
             throw $e;
         }
 
