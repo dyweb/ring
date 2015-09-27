@@ -69,20 +69,21 @@ class File
     /**
      * TODO: MIME check
      *
-     * @return true
+     * @return $this
      * @throws FileTooLargeException
      */
     public function check()
     {
-        if ($this->isValid) {
-            return;
-        }
-        $srcSize = $this->src->getFileSize();
-        if (!$this->rule->isValidSize($srcSize)) {
-            throw new FileTooLargeException($srcSize);
+        if (!$this->isValid) {
+            $srcSize = $this->src->getFileSize();
+            if (!$this->rule->isValidSize($srcSize)) {
+                throw new FileTooLargeException($srcSize);
+            }
+
+            $this->isValid = true;
         }
 
-        $this->isValid = true;
+        return $this;
     }
 
 

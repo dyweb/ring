@@ -72,7 +72,7 @@ class LocalFileTest extends PHPUnit_Framework_TestCase
     {
         foreach (range(0, count($this->files) - 1) as $i) {
             $this->assertEquals(
-                \Dy\Ring\FileSrc\FileSrc::filterFileName(pathinfo($this->filePaths[$i], PATHINFO_BASENAME)),
+                \Dy\Ring\Util::filterFileName(pathinfo($this->filePaths[$i], PATHINFO_BASENAME)),
                 $this->files[$i]->getFileName()
             );
         }

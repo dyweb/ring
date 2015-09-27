@@ -60,27 +60,28 @@ class Image extends File
 
 
     /**
+     * return $this
      * @throws FileTooLargeException
      * @throws NotImageException
      * @throws \Exception
      */
     public function check()
     {
-        if ($this->isValid) {
-            return;
+        if (!$this->isValid) {
+            try {
+                parent::check();
+            } catch (FileTooLargeException $e) {
+                throw $e;
+            }
+
+            if (!$this->isImage()) {
+                throw new NotImageException($this->src->getFilePath());
+            }
+
+            $this->isValid = true;
         }
 
-        try {
-            parent::check();
-        } catch (FileTooLargeException $e) {
-            throw $e;
-        }
-
-        if (!$this->isImage()) {
-            throw new NotImageException($this->src->getFilePath());
-        }
-
-        $this->isValid = true;
+        return $this;
     }
 
 

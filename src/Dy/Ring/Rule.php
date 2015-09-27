@@ -22,13 +22,6 @@ class Rule
     protected $maxSize = 0;
 
     /**
-     * if overwrite when file already exists
-     *
-     * @var bool
-     */
-    protected $overwrite = false;
-
-    /**
      * if use hash filename
      *
      * @var bool
@@ -101,18 +94,6 @@ class Rule
         if ($size) {
             $this->maxSize = $size;
         }
-
-        return $this;
-    }
-
-
-    /**
-     * @param bool $bool
-     * @return $this
-     */
-    public function setOverWrite($bool)
-    {
-        $this->overwrite = (bool)$bool;
 
         return $this;
     }

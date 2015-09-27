@@ -246,14 +246,4 @@ abstract class FileSrc
 
         return $resource;
     }
-
-
-    /**
-     * @param string $fileName
-     * @return mixed
-     */
-    public static function filterFileName($fileName)
-    {
-        return str_replace(array('/', "\\", '-', ' '), '_', $fileName);
-    }
 }

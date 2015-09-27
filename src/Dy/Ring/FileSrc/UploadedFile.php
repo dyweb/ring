@@ -9,6 +9,7 @@
 namespace Dy\Ring\FileSrc;
 
 use Dy\Ring\Exception\FileSrc\NoFileUploadedException;
+use Dy\Ring\Util;
 
 class UploadedFile extends FileSrc
 {
@@ -25,7 +26,7 @@ class UploadedFile extends FileSrc
 
         $fileInfo = $_FILES[$field];
 
-        $this->fileName = static::filterFileName(pathinfo($fileInfo['name'], PATHINFO_BASENAME));
+        $this->fileName = Util::filterFileName(pathinfo($fileInfo['name'], PATHINFO_BASENAME));
         $this->filePath = $fileInfo['tmp_name'];
         $this->fileSize = intval($fileInfo['size']);
         $this->mimeType = $fileInfo['type'];

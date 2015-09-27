@@ -8,39 +8,56 @@
 
 namespace Dy\Ring\Backend;
 
+use Dy\Ring\BackendInterface;
 use Dy\Ring\Exception\CopyFileFailedException;
 use Dy\Ring\Exception\DirectoryNotExistException;
 use Dy\Ring\Exception\DirectoryNotWritableException;
 use Dy\Ring\Exception\FileSaveFailedException;
 use Dy\Ring\File;
+use Dy\Ring\Util;
 
-class LocalFs extends Backend
+class LocalFs implements BackendInterface
 {
     /**
-     * @param array $config
+     * @var string
      */
-    public function __construct(array $config = array())
+    private $uploadPath;
+
+    /**
+     * @var bool
+     */
+    private $overWrite;
+
+
+    /**
+     * @param $uploadPath
+     * @param bool|false $overwrite
+     * @throws DirectoryNotExistException
+     * @throws DirectoryNotWritableException
+     */
+    public function __construct($uploadPath, $overwrite = false)
     {
-        parent::__construct($config);
+        $this->setUploadPath($uploadPath)
+            ->setOverwrite($overwrite);
     }
 
 
     /**
-     * @param $basePath
+     * @param $uploadPath
      * @return $this
      * @throws DirectoryNotExistException
      * @throws DirectoryNotWritableException
      */
-    public function setBasePath($basePath)
+    public function setUploadPath($uploadPath)
     {
-        $this->basePath = realpath($basePath);
+        $this->uploadPath = realpath($uploadPath);
         
-        if (!$this->basePath) {
-            throw new DirectoryNotExistException($basePath);
+        if (!$this->uploadPath) {
+            throw new DirectoryNotExistException($uploadPath);
         }
         
-        if (!is_writable($this->basePath)) {
-            throw new DirectoryNotWritableException($this->basePath);
+        if (!is_writable($this->uploadPath)) {
+            throw new DirectoryNotWritableException($this->uploadPath);
         }
 
         return $this;
@@ -61,41 +78,24 @@ class LocalFs extends Backend
 
     /**
      * @param File $file
-     * @throws CopyFileFailedException
+     * @return bool
      * @throws FileSaveFailedException
-     * @throws \Exception
      */
-    public function save(File $file)
+    public function upload(File $file)
     {
-        $fullName = rtrim($this->basePath, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . $file->getBaseName();
-
         if (!$this->overWrite) {
-            $fileName = $file->getFileName();
-            $count = 0;
-            while (file_exists($fullName) and $count < 100) {
-                ++$count;
-                $fileName .= '(' . $count . ')';
-                $fullName = rtrim($this->basePath, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR .
-                    $fileName . '.' . $file->getFileExtension();
-            }
-
-            if (file_exists($fullName)) {
-                $fileName = $file->getFileName() . '_' . time();
-                $fullName = rtrim($this->basePath, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR .
-                    $fileName . '.' . $file->getFileExtension();
-            }
-
+            $fileName = Util::fileNameNotExist($this->uploadPath, $file->getFileName(), $file->getFileExtension());
             $file->setFileName($fileName);
         }
 
-        try {
-            $result = $file->copyTo($fullName);
-        } catch (CopyFileFailedException $e) {
-            throw $e;
-        }
+        $fullName = rtrim($this->uploadPath, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . $file->getBaseName();
 
-        if (!$result) {
+        try {
+            $file->copyTo($fullName);
+        } catch (CopyFileFailedException $e) {
             throw new FileSaveFailedException($fullName);
         }
+
+        return true;
     }
 }

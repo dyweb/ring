@@ -11,6 +11,7 @@ namespace Dy\Ring\FileSrc;
 use Dy\Ring\Exception\FileSrc\FailedOpenFileException;
 use Dy\Ring\Exception\FileSrc\FileNotExistException;
 use Dy\Ring\Exception\FileSrc\FileNotReadableException;
+use Dy\Ring\Util;
 
 class LocalFile extends FileSrc
 {
@@ -40,7 +41,7 @@ class LocalFile extends FileSrc
     {
         if (!$this->fileName) {
             $this->fileName = pathinfo($this->filePath, PATHINFO_BASENAME);
-            $this->fileName = static::filterFileName($this->fileName);
+            $this->fileName = Util::filterFileName($this->fileName);
         }
 
         return $this->fileName;
