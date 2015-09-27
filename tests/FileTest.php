@@ -20,7 +20,7 @@ class FileTest extends  PHPUnit_Framework_TestCase
             $this->assertEquals('Here should not throw and exceptions', $e->getMessage());
         }
         if (isset($result)) {
-            $this->assertEmpty($result);
+            $this->assertTrue($result instanceof \Dy\Ring\File);
             unset($result);
         }
 
