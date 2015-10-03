@@ -117,7 +117,7 @@ class ImageRule extends Rule
      */
     public function setDstHeight($height)
     {
-        $this->dstWidth = intval($height);
+        $this->dstHeight = intval($height);
 
         return $this;
     }

@@ -33,13 +33,14 @@ class Util
         $count = 0;
         while (file_exists($fullName) and $count < 100) {
             ++$count;
-            $fileName .= '(' . $count . ')';
             $fullName = rtrim($path, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR .
-                $fileName . '.' . $extension;
+                $fileName . '(' . $count . ')' . '.' . $extension;
         }
 
         if (file_exists($fullName)) {
             $fileName = $fileName . '_' . time();
+        } elseif ($count) {
+            $fileName .= '(' . $count . ')';
         }
 
         return $fileName;

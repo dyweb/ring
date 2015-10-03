@@ -60,7 +60,7 @@ class Image extends File
 
 
     /**
-     * return $this
+     * @return $this
      * @throws FileTooLargeException
      * @throws NotImageException
      * @throws \Exception
@@ -86,6 +86,7 @@ class Image extends File
 
 
     /**
+     * @return $this
      * @throws FailedException
      * @throws FileTooLargeException
      * @throws FunctionNotExistException
@@ -97,7 +98,7 @@ class Image extends File
         $this->check();
 
         if ($this->rule->needScaling()) {
-            $this->scale($this->rule->getDstWidth(), $this->rule->getDstWidth());
+            $this->scale($this->rule->getDstWidth(), $this->rule->getDstHeight());
         }
 
         if ($this->rule->needInterlaceJpeg()) {
@@ -107,6 +108,8 @@ class Image extends File
         if ($this->rule->needRotate()) {
             $this->rotate();
         }
+
+        return $this;
     }
 
 
@@ -115,10 +118,15 @@ class Image extends File
      * @param $dstHeight
      * @return $this
      * @throws FailedException
+     * @throws FileTooLargeException
      * @throws FunctionNotExistException
+     * @throws NotImageException
+     * @throws \Exception
      */
     public function scale($dstWidth, $dstHeight)
     {
+        $this->check();
+
         $functions = get_extension_funcs('gd');
         if (empty($functions)) {
             throw new FunctionNotExistException('GD::*');
@@ -152,11 +160,15 @@ class Image extends File
     /**
      * @return $this
      * @throws FailedException
+     * @throws FileTooLargeException
      * @throws FunctionNotExistException
      * @throws NotImageException
+     * @throws \Exception
      */
     public function interlaceJpeg()
     {
+        $this->check();
+
         if ($this->src->getImageType() == IMAGETYPE_JPEG) {
             $resource = $this->resource;
 
@@ -177,10 +189,15 @@ class Image extends File
     /**
      * @return $this
      * @throws FailedException
+     * @throws FileTooLargeException
      * @throws FunctionNotExistException
+     * @throws NotImageException
+     * @throws \Exception
      */
     public function rotate()
     {
+        $this->check();
+
         $functions = get_extension_funcs('exif');
         if (empty($functions)) {
             throw new FunctionNotExistException('EXIF::*');

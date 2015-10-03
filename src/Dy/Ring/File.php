@@ -161,9 +161,12 @@ class File
      * @param $dst
      * @return bool
      * @throws CopyFileFailedException
+     * @throws FileTooLargeException
      */
     public function copyTo($dst)
     {
+        $this->check();
+
         $result = @copy($this->src->getFilePath(), $dst);
 
         if (!$result) {
