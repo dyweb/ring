@@ -8,8 +8,8 @@
 
 namespace Dy\Ring;
 
-use Dy\Ring\Exception\CopyFileFailedException;
-use Dy\Ring\Exception\FileTooLargeException;
+use Dy\Ring\Exception\OutOfBoundsException;
+use Dy\Ring\Exception\RuntimeException;
 use Dy\Ring\FileSrc\FileSrc;
 
 /**
@@ -70,14 +70,14 @@ class File
      * TODO: MIME check
      *
      * @return $this
-     * @throws FileTooLargeException
+     * @throws OutOfBoundsException
      */
     public function check()
     {
         if (!$this->isValid) {
             $srcSize = $this->src->getFileSize();
             if (!$this->rule->isValidSize($srcSize)) {
-                throw new FileTooLargeException($srcSize);
+                throw new OutOfBoundsException('Source file is too large');
             }
 
             $this->isValid = true;
@@ -160,8 +160,6 @@ class File
     /**
      * @param $dst
      * @return bool
-     * @throws CopyFileFailedException
-     * @throws FileTooLargeException
      */
     public function copyTo($dst)
     {
@@ -170,7 +168,7 @@ class File
         $result = @copy($this->src->getFilePath(), $dst);
 
         if (!$result) {
-            throw new CopyFileFailedException($this->src->getFilePath());
+            throw new RuntimeException('Failed to copy to : ' . $this->src->getFilePath());
         }
 
         return true;

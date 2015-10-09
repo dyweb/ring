@@ -17,7 +17,7 @@ interface BackendInterface
     /**
      * @param File $file
      * @return bool
-     * @throws Dy\Ring\Exception\FileSaveFailedException
+     * @throws Dy\Ring\Exception\RuntimeException;
      */
     public function upload(File $file);
 }

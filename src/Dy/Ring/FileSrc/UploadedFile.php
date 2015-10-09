@@ -8,20 +8,18 @@
 
 namespace Dy\Ring\FileSrc;
 
-use Dy\Ring\Exception\FileSrc\NoFileUploadedException;
+use Dy\Ring\Exception\InvalidArgumentException;
 use Dy\Ring\Util;
 
 class UploadedFile extends FileSrc
 {
     /**
-     *
-     * @param  string $field
-     * @throws NoFileUploadedException
+     * @param $field
      */
     public function __construct($field)
     {
         if (empty($_FILES[$field])) {
-            throw new NoFileUploadedException($field);
+            throw new InvalidArgumentException($field . ': not uploaded');
         }
 
         $fileInfo = $_FILES[$field];

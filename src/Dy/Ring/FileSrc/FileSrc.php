@@ -8,9 +8,8 @@
 
 namespace Dy\Ring\FileSrc;
 
-use Dy\Ring\Exception\FileSrc\FailedOpenImageException;
-use Dy\Ring\Exception\FileSrc\NotImageException;
-use Dy\Ring\Exception\FileSrc\UnsupportedImageTypeException;
+use Dy\Ring\Exception\NotSupportedException;
+use Dy\Ring\Exception\RuntimeException;
 
 abstract class FileSrc
 {
@@ -92,10 +91,7 @@ abstract class FileSrc
 
 
     /**
-     * @return null|resource
-     * @throws FailedOpenImageException
-     * @throws UnsupportedImageTypeException
-     * @throws \Exception
+     * @return resource
      */
     public function getResource()
     {
@@ -106,15 +102,12 @@ abstract class FileSrc
             return $this->resource;
         }
 
-        throw new NotImageException($this->getFilePath());
+        throw new NotSupportedException($this->getFilePath() . ' is not an image');
     }
 
 
     /**
-     * @return int|null
-     * @throws FailedOpenImageException
-     * @throws UnsupportedImageTypeException
-     * @throws \Exception
+     * @return int
      */
     public function getWidth()
     {
@@ -125,15 +118,12 @@ abstract class FileSrc
             return $this->width;
         }
 
-        throw new NotImageException($this->getFilePath());
+        throw new NotSupportedException($this->getFilePath() . ' is not an image');
     }
 
 
     /**
-     * @return int|null
-     * @throws FailedOpenImageException
-     * @throws UnsupportedImageTypeException
-     * @throws \Exception
+     * @return int
      */
     public function getHeight()
     {
@@ -144,16 +134,12 @@ abstract class FileSrc
             return $this->height;
         }
 
-        throw new NotImageException($this->getFilePath());
+        throw new NotSupportedException($this->getFilePath() . ' is not an image');
     }
 
 
     /**
      * @return int
-     * @throws FailedOpenImageException
-     * @throws NotImageException
-     * @throws UnsupportedImageTypeException
-     * @throws \Exception
      */
     public function getImageType()
     {
@@ -164,15 +150,12 @@ abstract class FileSrc
             return $this->imageType;
         }
 
-        throw new NotImageException($this->getFilePath());
+        throw new NotSupportedException($this->getFilePath() . ' is not an image');
     }
 
 
     /**
      * @return bool
-     * @throws FailedOpenImageException
-     * @throws UnsupportedImageTypeException
-     * @throws \Exception
      */
     public function isImage()
     {
@@ -189,9 +172,7 @@ abstract class FileSrc
 
 
     /**
-     * @throws FailedOpenImageException
-     * @throws UnsupportedImageTypeException
-     * @throws \Exception
+     *
      */
     protected function openImage()
     {
@@ -200,7 +181,7 @@ abstract class FileSrc
         $imageInfo = @getimagesize($filePath);
 
         if (!$imageInfo) {
-            throw new FailedOpenImageException($filePath);
+            throw new RuntimeException('Failed to open file image ' . $filePath);
         }
 
         list($this->width, $this->height, $this->imageType)
@@ -208,9 +189,9 @@ abstract class FileSrc
 
         try {
             $resource = $this->createResource($filePath);
-        } catch (UnsupportedImageTypeException $e) {
+        } catch (NotSupportedException $e) {
             throw $e;
-        } catch (FailedOpenImageException $e) {
+        } catch (RuntimeException $e) {
             throw $e;
         }
 
@@ -221,8 +202,9 @@ abstract class FileSrc
     /**
      * @param $filePath
      * @return resource
-     * @throws FailedOpenImageException
-     * @throws UnsupportedImageTypeException
+     *
+     * @throws NotSupportedException
+     * @throws RuntimeException
      */
     protected function createResource($filePath)
     {
@@ -237,11 +219,11 @@ abstract class FileSrc
                 $resource = @imagecreatefromgif($filePath);
                 break;
             default:
-                throw new UnsupportedImageTypeException(image_type_to_mime_type($this->imageType));
+                throw new NotSupportedException('Unsupported image mime type : ' . image_type_to_mime_type($this->imageType));
         }
 
         if (!$resource) {
-            throw new FailedOpenImageException($filePath);
+            throw new RuntimeException('Failed to open file : ' . $filePath);
         }
 
         return $resource;

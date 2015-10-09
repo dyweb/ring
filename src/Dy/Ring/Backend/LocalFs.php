@@ -8,11 +8,9 @@
 
 namespace Dy\Ring\Backend;
 
+use Doctrine\Instantiator\Exception\InvalidArgumentException;
 use Dy\Ring\BackendInterface;
-use Dy\Ring\Exception\CopyFileFailedException;
-use Dy\Ring\Exception\DirectoryNotExistException;
-use Dy\Ring\Exception\DirectoryNotWritableException;
-use Dy\Ring\Exception\FileSaveFailedException;
+use Dy\Ring\Exception\RuntimeException;
 use Dy\Ring\File;
 use Dy\Ring\Util;
 
@@ -32,8 +30,6 @@ class LocalFs implements BackendInterface
     /**
      * @param $uploadPath
      * @param bool|false $overwrite
-     * @throws DirectoryNotExistException
-     * @throws DirectoryNotWritableException
      */
     public function __construct($uploadPath, $overwrite = false)
     {
@@ -45,19 +41,17 @@ class LocalFs implements BackendInterface
     /**
      * @param $uploadPath
      * @return $this
-     * @throws DirectoryNotExistException
-     * @throws DirectoryNotWritableException
      */
     public function setUploadPath($uploadPath)
     {
         $this->uploadPath = realpath($uploadPath);
         
         if (!$this->uploadPath) {
-            throw new DirectoryNotExistException($uploadPath);
+            throw new InvalidArgumentException($uploadPath . ' does not exist');
         }
         
         if (!is_writable($this->uploadPath)) {
-            throw new DirectoryNotWritableException($this->uploadPath);
+            throw new InvalidArgumentException($this->uploadPath . 'is not writable');
         }
 
         return $this;
@@ -79,7 +73,6 @@ class LocalFs implements BackendInterface
     /**
      * @param File $file
      * @return bool
-     * @throws FileSaveFailedException
      */
     public function upload(File $file)
     {
@@ -92,8 +85,8 @@ class LocalFs implements BackendInterface
 
         try {
             $file->copyTo($fullName);
-        } catch (CopyFileFailedException $e) {
-            throw new FileSaveFailedException($fullName);
+        } catch (RuntimeException $e) {
+            throw $e;
         }
 
         return true;

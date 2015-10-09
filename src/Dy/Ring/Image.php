@@ -8,13 +8,10 @@
 
 namespace Dy\Ring;
 
-use Dy\Ring\Exception\CopyFileFailedException;
-use Dy\Ring\Exception\FileSrc\NotImageException;
-use Dy\Ring\Exception\FileSrc\UnsupportedImageTypeException;
-use Dy\Ring\Exception\FileTooLargeException;
-use Dy\Ring\Exception\FunctionNotExistException;
+use Dy\Ring\Exception\NotSupportedException;
+use Dy\Ring\Exception\OutOfBoundsException;
+use Dy\Ring\Exception\RuntimeException;
 use Dy\Ring\FileSrc\FileSrc;
-use Dy\Ring\Exception\ImageProcessingFailedException as FailedException;
 
 /**
  * Class Image
@@ -46,8 +43,6 @@ class Image extends File
     /**
      * @param FileSrc $src
      * @param ImageRule $rule
-     * @throws FileTooLargeException
-     * @throws NotImageException
      */
     public function __construct(FileSrc $src, ImageRule $rule)
     {
@@ -61,21 +56,18 @@ class Image extends File
 
     /**
      * @return $this
-     * @throws FileTooLargeException
-     * @throws NotImageException
-     * @throws \Exception
      */
     public function check()
     {
         if (!$this->isValid) {
             try {
                 parent::check();
-            } catch (FileTooLargeException $e) {
+            } catch (OutOfBoundsException $e) {
                 throw $e;
             }
 
             if (!$this->isImage()) {
-                throw new NotImageException($this->src->getFilePath());
+                throw new NotSupportedException($this->src->getFilePath() . ' is not an image');
             }
 
             $this->isValid = true;
@@ -87,11 +79,6 @@ class Image extends File
 
     /**
      * @return $this
-     * @throws FailedException
-     * @throws FileTooLargeException
-     * @throws FunctionNotExistException
-     * @throws NotImageException
-     * @throws \Exception
      */
     public function process()
     {
@@ -117,20 +104,10 @@ class Image extends File
      * @param $dstWidth
      * @param $dstHeight
      * @return $this
-     * @throws FailedException
-     * @throws FileTooLargeException
-     * @throws FunctionNotExistException
-     * @throws NotImageException
-     * @throws \Exception
      */
     public function scale($dstWidth, $dstHeight)
     {
         $this->check();
-
-        $functions = get_extension_funcs('gd');
-        if (empty($functions)) {
-            throw new FunctionNotExistException('GD::*');
-        }
 
         $dstResource = imagecreatetruecolor($dstWidth, $dstHeight);
         $result = imagecopyresampled(
@@ -147,7 +124,7 @@ class Image extends File
         );
         if (!$result) {
             imagedestroy($dstResource);
-            throw new FailedException('scale');
+            throw new RuntimeException('Failed to scale');
         }
 
         $this->resource = $dstResource;
@@ -159,11 +136,6 @@ class Image extends File
 
     /**
      * @return $this
-     * @throws FailedException
-     * @throws FileTooLargeException
-     * @throws FunctionNotExistException
-     * @throws NotImageException
-     * @throws \Exception
      */
     public function interlaceJpeg()
     {
@@ -173,13 +145,13 @@ class Image extends File
             $resource = $this->resource;
 
             if (!function_exists('imageinterlace')) {
-                throw new FunctionNotExistException('GD::imageinterlace');
+                throw new NotSupportedException('Need "GD" extension');
             }
 
             if (@imageinterlace($resource, 1)) {
                 $this->resource = $resource;
             } else {
-                throw new FailedException('interlaceJpeg');
+                throw new RuntimeException('Failed to interlaceJpeg');
             }
         }
         return $this;
@@ -188,11 +160,6 @@ class Image extends File
 
     /**
      * @return $this
-     * @throws FailedException
-     * @throws FileTooLargeException
-     * @throws FunctionNotExistException
-     * @throws NotImageException
-     * @throws \Exception
      */
     public function rotate()
     {
@@ -200,12 +167,12 @@ class Image extends File
 
         $functions = get_extension_funcs('exif');
         if (empty($functions)) {
-            throw new FunctionNotExistException('EXIF::*');
+            throw new NotSupportedException('Need "EXIF" extension');
         }
 
         $functions = get_extension_funcs('gd');
         if (empty($functions)) {
-            throw new FunctionNotExistException('GD::*');
+            throw new NotSupportedException('Need "GD" extension');
         }
 
         $exif = @exif_read_data($this->src->getFilePath(), 'IDFO');
@@ -248,19 +215,19 @@ class Image extends File
                     );
 
                     if (!$result) {
-                        throw new FailedException('rotate');
+                        throw new RuntimeException('Failed to rotate image');
                     }
 
                     imagedestroy($this->resource);
                     $this->resource = $resource;
                     list($this->height, $this->width) = array($this->width, $this->height);
                 } else {
-                    throw new FailedException('rotate');
+                    throw new RuntimeException('Failed to rotate image');
                 }
             }
 
             if ($orientation === 3) {
-                $this->resource = imagerotate($$this->resource, 180, 0);
+                $this->resource = imagerotate($this->resource, 180, 0);
             }
         }
 
@@ -271,11 +238,6 @@ class Image extends File
     /**
      * @param $dst
      * @return bool
-     * @throws CopyFileFailedException
-     * @throws FileTooLargeException
-     * @throws NotImageException
-     * @throws UnsupportedImageTypeException
-     * @throws \Exception
      */
     public function copyTo($dst)
     {
@@ -293,11 +255,11 @@ class Image extends File
                 $result = @imagegif($this->resource, $dst);
                 break;
             default:
-                throw new UnsupportedImageTypeException($this->src->getFilePath());
+                throw new NotSupportedException('Unsupported image mime type');
         }
 
         if (!$result) {
-            throw new CopyFileFailedException($this->src->getFilePath());
+            throw new RuntimeException('Failed to copy to : ' . $this->src->getFilePath());
         }
 
         return true;

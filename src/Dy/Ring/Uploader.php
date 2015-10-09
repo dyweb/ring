@@ -9,7 +9,7 @@
 namespace Dy\Ring;
 
 use Dy\Ring\Backend\LocalFs;
-use Dy\Ring\Exception\FileSrc\NoFileUploadedException;
+use Dy\Ring\Exception\RuntimeException;
 use Dy\Ring\FileSrc\FileSrc;
 use Dy\Ring\FileSrc\UploadedFile;
 
@@ -90,8 +90,7 @@ class Uploader
 
 
     /**
-     * @throws NoFileUploadedException
-     * @throws \Exception
+     * @return $this
      */
     public function prepare()
     {
@@ -99,7 +98,7 @@ class Uploader
             if (is_string($this->fileSrc)) {
                 try {
                     $this->fileSrc = new UploadedFile($this->fileSrc);
-                } catch (NoFileUploadedException $e) {
+                } catch (RuntimeException $e) {
                     throw $e;
                 }
             }
