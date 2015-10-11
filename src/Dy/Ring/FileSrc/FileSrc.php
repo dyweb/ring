@@ -219,7 +219,8 @@ abstract class FileSrc
                 $resource = @imagecreatefromgif($filePath);
                 break;
             default:
-                throw new NotSupportedException('Unsupported image mime type : ' . image_type_to_mime_type($this->imageType));
+                throw new NotSupportedException('Unsupported image mime type : ' .
+                    image_type_to_mime_type($this->imageType));
         }
 
         if (!$resource) {

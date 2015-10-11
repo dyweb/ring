@@ -14,4 +14,5 @@ namespace Dy\Ring\Exception;
  */
 class OutOfBoundsException extends \OutOfBoundsException implements ExceptionInterface
 {
+    //
 }

@@ -14,4 +14,5 @@ namespace Dy\Ring\Exception;
  */
 class InvalidArgumentException extends \InvalidArgumentException implements ExceptionInterface
 {
+    //
 }

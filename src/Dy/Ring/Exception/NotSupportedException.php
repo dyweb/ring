@@ -14,4 +14,5 @@ namespace Dy\Ring\Exception;
  */
 class NotSupportedException extends RuntimeException
 {
+    //
 }
