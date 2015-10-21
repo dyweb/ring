@@ -6,9 +6,7 @@
  * Time: 上午9:38
  */
 
-namespace Dy\Ring\Backend;
-
-use Dy\Ring\File;
+namespace Dy\Ring;
 
 /**
  * Interface BackendInterface

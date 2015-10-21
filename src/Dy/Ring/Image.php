@@ -11,7 +11,7 @@ namespace Dy\Ring;
 use Dy\Ring\Exception\NotSupportedException;
 use Dy\Ring\Exception\OutOfBoundsException;
 use Dy\Ring\Exception\RuntimeException;
-use Dy\Ring\Source\Source;
+use Dy\Ring\Source\AbstractSource;
 
 /**
  * Class Image
@@ -41,10 +41,10 @@ class Image extends File
 
 
     /**
-     * @param Source $src
+     * @param AbstractSource $src
      * @param ImageRule $rule
      */
-    public function __construct(Source $src, ImageRule $rule)
+    public function __construct(AbstractSource $src, ImageRule $rule)
     {
         parent::__construct($src, $rule);
 

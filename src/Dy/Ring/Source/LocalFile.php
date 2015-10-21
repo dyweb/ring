@@ -12,7 +12,7 @@ use Dy\Ring\Exception\InvalidArgumentException;
 use Dy\Ring\Exception\RuntimeException;
 use Dy\Ring\Util;
 
-class LocalFile extends Source
+class LocalFile extends AbstractSource
 {
     /**
      * @param $filePath

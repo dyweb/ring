@@ -10,6 +10,7 @@ namespace Dy\Ring\Backend;
 
 use Doctrine\Instantiator\Exception\InvalidArgumentException;
 use Dy\Ring\Exception\RuntimeException;
+use Dy\Ring\BackendInterface;
 use Dy\Ring\File;
 use Dy\Ring\Util;
 
@@ -44,11 +45,11 @@ class LocalFs implements BackendInterface
     public function setUploadPath($uploadPath)
     {
         $this->uploadPath = realpath($uploadPath);
-        
+
         if (!$this->uploadPath) {
             throw new InvalidArgumentException($uploadPath . ' does not exist');
         }
-        
+
         if (!is_writable($this->uploadPath)) {
             throw new InvalidArgumentException($this->uploadPath . 'is not writable');
         }

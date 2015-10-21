@@ -11,7 +11,7 @@ namespace Dy\Ring\Source;
 use Dy\Ring\Exception\NotSupportedException;
 use Dy\Ring\Exception\RuntimeException;
 
-abstract class Source
+abstract class AbstractSource
 {
     /**
      * @var string

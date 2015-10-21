@@ -10,7 +10,7 @@ namespace Dy\Ring;
 
 use Dy\Ring\Backend\LocalFs;
 use Dy\Ring\Exception\RuntimeException;
-use Dy\Ring\Source\Source;
+use Dy\Ring\Source\AbstractSource;
 use Dy\Ring\Source\UploadedFile;
 
 class Uploader
@@ -26,7 +26,7 @@ class Uploader
     private $backend = null;
 
     /**
-     * @var Source
+     * @var AbstractSource
      */
     private $fileSrc = null;
 
@@ -103,7 +103,7 @@ class Uploader
                 }
             }
 
-            if ($this->fileSrc instanceof Source) {
+            if ($this->fileSrc instanceof AbstractSource) {
                 $rule = strtolower($this->fileType) === 'normal' ?
                     new Rule() : new ImageRule();
 

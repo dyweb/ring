@@ -11,7 +11,7 @@ namespace Dy\Ring\Source;
 use Dy\Ring\Exception\InvalidArgumentException;
 use Dy\Ring\Util;
 
-class UploadedFile extends Source
+class UploadedFile extends AbstractSource
 {
     /**
      * @param $field
