@@ -29,4 +29,39 @@ trait FileTrait
      * @var string
      */
     protected $mimeType;
+
+    /**
+     * @return string
+     */
+    public function getFileName()
+    {
+        return $this->fileName;
+    }
+
+
+    /**
+     * @return string
+     */
+    public function getFilePath()
+    {
+        return $this->filePath;
+    }
+
+
+    /**
+     * @return int
+     */
+    public function getFileSize()
+    {
+        return $this->fileSize;
+    }
+
+
+    /**
+     * @return string
+     */
+    public function getMimeType()
+    {
+        return $this->mimeType;
+    }
 }

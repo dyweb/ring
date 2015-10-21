@@ -44,16 +44,6 @@ class LocalFile extends AbstractSource
         return $this->fileName;
     }
 
-
-    /**
-     * @return string
-     */
-    public function getFilePath()
-    {
-        return $this->filePath;
-    }
-
-
     /**
      * @return int
      */

@@ -19,7 +19,8 @@ class UploadedFile extends AbstractSource
     public function __construct($field)
     {
         if (empty($_FILES[$field])) {
-            throw new InvalidArgumentException($field . ': not uploaded');
+            throw new InvalidArgumentException('file not uploaded as , ' . $field .
+                'check if your form is uploading file with name attribute as ' . $field);
         }
 
         $fileInfo = $_FILES[$field];
@@ -28,41 +29,5 @@ class UploadedFile extends AbstractSource
         $this->filePath = $fileInfo['tmp_name'];
         $this->fileSize = intval($fileInfo['size']);
         $this->mimeType = $fileInfo['type'];
-    }
-
-
-    /**
-     * @return string
-     */
-    public function getFileName()
-    {
-        return $this->fileName;
-    }
-
-
-    /**
-     * @return string
-     */
-    public function getFilePath()
-    {
-        return $this->filePath;
-    }
-
-
-    /**
-     * @return int
-     */
-    public function getFileSize()
-    {
-        return $this->fileSize;
-    }
-
-
-    /**
-     * @return string
-     */
-    public function getMimeType()
-    {
-        return $this->mimeType;
     }
 }
