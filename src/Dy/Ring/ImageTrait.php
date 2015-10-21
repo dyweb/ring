@@ -19,4 +19,20 @@ trait ImageTrait
      * @var int
      */
     protected $height = null;
+
+    /**
+     * @return int
+     */
+    public function getWidth()
+    {
+        return $this->width;
+    }
+
+    /**
+     * @return int
+     */
+    public function getHeight()
+    {
+        return $this->height;
+    }
 }
