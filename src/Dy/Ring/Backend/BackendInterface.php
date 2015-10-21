@@ -6,7 +6,9 @@
  * Time: 上午9:38
  */
 
-namespace Dy\Ring;
+namespace Dy\Ring\Backend;
+
+use Dy\Ring\File;
 
 /**
  * Interface BackendInterface
@@ -17,7 +19,7 @@ interface BackendInterface
     /**
      * @param File $file
      * @return bool
-     * @throws Dy\Ring\Exception\RuntimeException;
+     * @throws \Dy\Ring\Exception\RuntimeException;
      */
     public function upload(File $file);
 }

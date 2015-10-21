@@ -9,7 +9,6 @@
 namespace Dy\Ring\Backend;
 
 use Doctrine\Instantiator\Exception\InvalidArgumentException;
-use Dy\Ring\BackendInterface;
 use Dy\Ring\Exception\RuntimeException;
 use Dy\Ring\File;
 use Dy\Ring\Util;
