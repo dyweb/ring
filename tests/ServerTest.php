@@ -8,17 +8,30 @@
  */
 class ServerTest extends PHPUnit_Framework_TestCase
 {
-    public function testServerRunning()
+    /**
+     * @var \GuzzleHttp\Client
+     */
+    protected $client;
+
+    protected function setUp()
     {
-        $client = new \GuzzleHttp\Client(array(
+        $this->client = new \GuzzleHttp\Client(array(
             'base_uri' => 'http://localhost:' . WEB_SERVER_PORT,
             'timeout' => 2.0
         ));
-        $res = $client->get('/');
-//        var_dump($res->getBody()->getContents());
+    }
+
+    public function testServerRunning()
+    {
+        $res = $this->client->get('/');
         $this->assertEquals(200, $res->getStatusCode());
+
+    }
+
+    public function testServerReturn404()
+    {
         try {
-            $client->get('/abc.txt');
+            $this->client->get('/abc.txt');
         } catch (GuzzleHttp\Exception\ClientException $ex) {
             $this->assertEquals(404, $ex->getResponse()->getStatusCode());
         }
