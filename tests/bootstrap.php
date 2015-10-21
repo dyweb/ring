@@ -17,13 +17,13 @@ if (!defined('WEB_SERVER_PORT')) {
     define('WEB_SERVER_PORT', 9876);
 }
 if (!defined('WEB_SERVER_DOCROOT')) {
-    define('WEB_SERVER_DOCROOT', __DIR__ . '/../example');
+    define('WEB_SERVER_DOCROOT', realpath(__DIR__ . '/../example/'));
 }
 
 $host = 'localhost';
 $port = WEB_SERVER_PORT;
 $root = WEB_SERVER_DOCROOT;
-$command = sprintf('php -S %s:%d %s >/dev/null 2>&1 & echo $!',
+$command = sprintf('php -S %s:%d -t %s >/dev/null 2>&1 & echo $!',
     $host, $port, $root);
 
 $output = array();

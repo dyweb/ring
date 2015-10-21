@@ -15,9 +15,12 @@ class ServerTest extends PHPUnit_Framework_TestCase
             'timeout' => 2.0
         ));
         $res = $client->get('/');
-        var_dump($res->getBody()->getContents());
+//        var_dump($res->getBody()->getContents());
         $this->assertEquals(200, $res->getStatusCode());
-        $resNotFound = $client->get('/showMeTheMoney');
-        $this->assertEquals(404, $resNotFound->getStatusCode());
+        try {
+            $client->get('/abc.txt');
+        } catch (GuzzleHttp\Exception\ClientException $ex) {
+            $this->assertEquals(404, $ex->getResponse()->getStatusCode());
+        }
     }
 }
