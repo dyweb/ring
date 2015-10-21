@@ -6,12 +6,12 @@
  * Time: 下午11:19
  */
 
-namespace Dy\Ring\FileSrc;
+namespace Dy\Ring\Source;
 
 use Dy\Ring\Exception\InvalidArgumentException;
 use Dy\Ring\Util;
 
-class UploadedFile extends FileSrc
+class UploadedFile extends Source
 {
     /**
      * @param $field

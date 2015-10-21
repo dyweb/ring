@@ -10,7 +10,7 @@ namespace Dy\Ring;
 
 use Dy\Ring\Exception\OutOfBoundsException;
 use Dy\Ring\Exception\RuntimeException;
-use Dy\Ring\FileSrc\FileSrc;
+use Dy\Ring\Source\Source;
 
 /**
  * Class File
@@ -19,7 +19,7 @@ use Dy\Ring\FileSrc\FileSrc;
 class File
 {
     /**
-     * @var FileSrc
+     * @var Source
      */
     protected $src;
 
@@ -53,10 +53,10 @@ class File
     protected $isValid = null;
 
     /**
-     * @param FileSrc $src
+     * @param Source $src
      * @param Rule $rule
      */
-    public function __construct(FileSrc $src, Rule $rule)
+    public function __construct(Source $src, Rule $rule)
     {
         $this->src = $src;
         $this->rule = $rule;

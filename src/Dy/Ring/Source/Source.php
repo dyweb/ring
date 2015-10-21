@@ -6,12 +6,12 @@
  * Time: 下午10:05
  */
 
-namespace Dy\Ring\FileSrc;
+namespace Dy\Ring\Source;
 
 use Dy\Ring\Exception\NotSupportedException;
 use Dy\Ring\Exception\RuntimeException;
 
-abstract class FileSrc
+abstract class Source
 {
     /**
      * @var string

@@ -6,13 +6,13 @@
  * Time: 下午10:15
  */
 
-namespace Dy\Ring\FileSrc;
+namespace Dy\Ring\Source;
 
 use Dy\Ring\Exception\InvalidArgumentException;
 use Dy\Ring\Exception\RuntimeException;
 use Dy\Ring\Util;
 
-class LocalFile extends FileSrc
+class LocalFile extends Source
 {
     /**
      * @param $filePath
