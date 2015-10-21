@@ -10,29 +10,12 @@ namespace Dy\Ring\Source;
 
 use Dy\Ring\Exception\NotSupportedException;
 use Dy\Ring\Exception\RuntimeException;
+use Dy\Ring\FileTrait;
 use Dy\Ring\SourceInterface;
 
 abstract class AbstractSource implements SourceInterface
 {
-    /**
-     * @var string
-     */
-    protected $fileName;
-
-    /**
-     * @var string
-     */
-    protected $filePath;
-
-    /**
-     * @var int
-     */
-    protected $fileSize;
-
-    /**
-     * @var string
-     */
-    protected $mimeType;
+    use FileTrait
 
     /**
      * @var resource
