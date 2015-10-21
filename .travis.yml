@@ -24,7 +24,8 @@ install:
   - composer install --no-interaction --prefer-dist
 
 script:
-  - phpunit
+  # use vendor phpunit
+  - sh -c "./vendor/bin/phpunit"
   - sh -c "./vendor/bin/phpcs --standard=PSR2 ./src/"
 
 services:
