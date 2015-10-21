@@ -10,8 +10,9 @@ namespace Dy\Ring\Source;
 
 use Dy\Ring\Exception\NotSupportedException;
 use Dy\Ring\Exception\RuntimeException;
+use Dy\Ring\SourceInterface;
 
-abstract class AbstractSource
+abstract class AbstractSource implements SourceInterface
 {
     /**
      * @var string
@@ -57,38 +58,6 @@ abstract class AbstractSource
      * @var int
      */
     protected $imageType = null;
-
-
-    /**
-     * get file source name
-     *
-     * @return string
-     */
-    abstract public function getFileName();
-
-    /**
-     * get file source path
-     *
-     * @return string
-     */
-    abstract public function getFilePath();
-
-
-    /**
-     * get file size in Bytes
-     *
-     * @return int
-     */
-    abstract public function getFileSize();
-
-
-    /**
-     * get file's mime type
-     *
-     * @return string
-     */
-    abstract public function getMimeType();
-
 
     /**
      * @return resource
