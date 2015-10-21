@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<phpunit colors="true" bootstrap="vendor/autoload.php">
+<phpunit colors="true" bootstrap="tests/bootstrap.php">
     <testsuites>
         <testsuite name="default">
             <directory>./tests</directory>
         </testsuite>
     </testsuites>
+    <php>
+        <const name="WEB_SERVER_PORT" value="9876" />
+        <const name="WEB_SERVER_DOCROOT" value="./example" />
+    </php>
 </phpunit>
