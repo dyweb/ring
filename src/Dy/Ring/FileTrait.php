@@ -8,7 +8,6 @@
 
 namespace Dy\Ring;
 
-
 trait FileTrait
 {
     /**

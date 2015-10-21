@@ -13,5 +13,5 @@ use Dy\Ring\SourceInterface;
 
 abstract class AbstractSource implements SourceInterface
 {
-    use FileTrait
+    use FileTrait;
 }
