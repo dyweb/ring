@@ -138,7 +138,7 @@ class Uploader
     public function doUpload()
     {
         try {
-            $this->backend->upload($this->file->check());
+            $this->backend->storeData($this->file->check());
         } catch (\Exception $e) {
             $this->setError($e->getMessage());
             return false;

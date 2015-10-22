@@ -8,6 +8,8 @@
 
 namespace Dy\Ring;
 
+use Dy\Ring\Source\AbstractSource;
+
 /**
  * Interface BackendInterface
  * @package Dy\Ring
@@ -15,9 +17,19 @@ namespace Dy\Ring;
 interface BackendInterface
 {
     /**
-     * @param File $file
-     * @return bool
-     * @throws \Dy\Ring\Exception\RuntimeException;
+     * Store source data to backend
+     *
+     * @param AbstractSource $source
+     * @return mixed
      */
-    public function upload(File $file);
+    public function storeData(AbstractSource $source);
+
+    /**
+     * Store source meta to backend
+     *
+     * @TODO: add throw not supported exception in comment
+     * @param AbstractSource $source
+     * @return mixed
+     */
+    public function storeMeta(AbstractSource $source);
 }
