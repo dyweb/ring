@@ -14,6 +14,8 @@ class SourceTest extends PHPUnit_Framework_TestCase
         $this->assertEquals("SourceTest.php", $localFile->getFileName());
         $this->assertEquals(__FILE__, $localFile->getFilePath());
         $this->assertEquals("text/x-php", $localFile->getMimeType());
+        $this->assertEquals("SourceTest", $localFile->getFileNameWithoutExt());
+        $this->assertEquals("php", $localFile->getFileExtension());
     }
 
     public function testUploadedFileSource()
