@@ -12,9 +12,14 @@ use Dy\Ring\Exception\InvalidArgumentException;
 use Dy\Ring\Exception\RuntimeException;
 use Dy\Ring\Util;
 
+/**
+ * Class LocalFile
+ * @package Dy\Ring\Source
+ */
 class LocalFile extends AbstractSource
 {
     /**
+     * @TODO init the file name, mime when construct for better performance
      * @param $filePath
      */
     public function __construct($filePath)
@@ -25,11 +30,11 @@ class LocalFile extends AbstractSource
             throw new InvalidArgumentException('File not exist : ' . $filePath);
         }
 
+        // TODO: add test
         if (!is_readable($this->filePath)) {
             throw new InvalidArgumentException('File not readable : ' . $filePath);
         }
     }
-
 
     /**
      * @return mixed|string
@@ -42,6 +47,21 @@ class LocalFile extends AbstractSource
         }
 
         return $this->fileName;
+    }
+
+    public function getFileNameWithoutExt()
+    {
+        // TODO: Implement getFileNameWithoutExt() method.
+    }
+
+    public function getFileExtension()
+    {
+        // TODO: Implement getFileExtension() method.
+    }
+
+    public function getFilePath()
+    {
+        return $this->filePath;
     }
 
     /**

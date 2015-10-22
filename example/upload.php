@@ -11,8 +11,6 @@ $uploadedFile = new \Dy\Ring\Source\UploadedFile("data");
 
 $data = array(
     'post' => $_POST,
-    'file' => array(
-        'name' => $uploadedFile->getFileName()
-    )
+    'file' => $uploadedFile->getInfo()
 );
 echo json_encode($data);

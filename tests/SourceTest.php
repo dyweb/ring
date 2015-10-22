@@ -33,6 +33,8 @@ class SourceTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(200, $res->getStatusCode());
         $json = json_decode($res->getBody()->getContents());
         $this->assertEquals('normal.jpg', $json->file->name);
+        $this->assertEquals('normal', $json->file->name_without_ext);
+        $this->assertEquals('jpg', $json->file->ext);
 
     }
 }

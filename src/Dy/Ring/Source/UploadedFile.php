@@ -30,4 +30,44 @@ class UploadedFile extends AbstractSource
         $this->fileSize = intval($fileInfo['size']);
         $this->mimeType = $fileInfo['type'];
     }
+
+    public function getFileName()
+    {
+        return $this->fileName;
+    }
+
+    public function getFileNameWithoutExt()
+    {
+        return substr($this->getFileName(), 0, -1 - strlen($this->getFileExtension()));
+    }
+
+    /**
+     * @see http://stackoverflow.com/questions/173868/how-to-extract-a-file-extension-in-php
+     *
+     * @return string
+     */
+    public function getFileExtension()
+    {
+        // TODO: handle file without ext
+        $extWithDot = strrchr($this->getFileName(), '.');
+        if ($extWithDot) {
+            return substr($extWithDot, 1);
+        }
+        return '';
+    }
+
+    public function getFilePath()
+    {
+        return $this->filePath;
+    }
+
+    public function getFileSize()
+    {
+        return $this->fileSize;
+    }
+
+    public function getMimeType()
+    {
+        return $this->mimeType;
+    }
 }

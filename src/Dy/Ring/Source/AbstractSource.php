@@ -8,10 +8,10 @@
 
 namespace Dy\Ring\Source;
 
-use Dy\Ring\FileTrait;
+use Dy\Ring\FileMetaTrait;
 use Dy\Ring\SourceInterface;
 
 abstract class AbstractSource implements SourceInterface
 {
-    use FileTrait;
+    use FileMetaTrait;
 }
