@@ -9,9 +9,8 @@
 namespace Dy\Ring\Source;
 
 use Dy\Ring\FileMetaTrait;
-use Dy\Ring\SourceInterface;
 
-abstract class AbstractSource implements SourceInterface
+abstract class AbstractSource
 {
     use FileMetaTrait;
 }
