@@ -31,8 +31,14 @@ final class LocalDataStorage extends AbstractDataStorage
         // TODO: Implement store() method.
         // check if base path exits and writable
         if (!is_dir($this->basePath)) {
-            throw new InvalidArgumentException('base path: ' . $this->basePath . ' is not a directory!' .
+            throw new InvalidArgumentException('base path: ' . $this->basePath . ' is not a directory or does not exist' .
                 'current working dir is ' . getcwd());
         }
+        // check writable
+        if (!is_writable($this->basePath)) {
+            throw new InvalidArgumentException('base path: ' . $this->basePath . ' is not writable' .
+                'current working dir is ' . getcwd());
+        }
+
     }
 }
