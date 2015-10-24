@@ -9,7 +9,9 @@
 
 namespace DY\Ring\Backend\Data;
 
+use Dy\Ring\Source\AbstractSource;
+
 abstract class AbstractDataStorage
 {
-
+    abstract public function store(AbstractSource $source);
 }

@@ -18,14 +18,4 @@ final class NullBackend extends AbstractBackend
     {
         parent::__construct($dataStorage, $metaStorage);
     }
-
-    public function storeData(AbstractSource $source)
-    {
-        // TODO: Implement storeData() method.
-    }
-
-    public function storeMeta(AbstractSource $source)
-    {
-        // TODO: Implement storeMeta() method.
-    }
 }

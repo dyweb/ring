@@ -44,7 +44,10 @@ abstract class AbstractBackend
      * @param AbstractSource $source
      * @return mixed
      */
-    abstract public function storeData(AbstractSource $source);
+    public function storeData(AbstractSource $source)
+    {
+        $this->dataStorage->store($source);
+    }
 
     /**
      * Store source meta to backend
@@ -53,5 +56,8 @@ abstract class AbstractBackend
      * @param AbstractSource $source
      * @return mixed
      */
-    abstract public function storeMeta(AbstractSource $source);
+    public function storeMeta(AbstractSource $source)
+    {
+        $this->metaStorage->store($source);
+    }
 }
