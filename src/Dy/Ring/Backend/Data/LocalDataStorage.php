@@ -12,6 +12,19 @@ use Dy\Ring\Source\AbstractSource;
 
 final class LocalDataStorage extends AbstractDataStorage
 {
+    /**
+     * @var string
+     */
+    protected $basePath;
+
+    /**
+     * @param string $basePath
+     */
+    public function __construct($basePath)
+    {
+        $this->basePath = $basePath;
+    }
+
     public function store(AbstractSource $source)
     {
         // TODO: Implement store() method.
