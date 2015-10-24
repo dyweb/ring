@@ -6,9 +6,9 @@
  * Time: 下午5:03
  */
 
-namespace DY\Ring\Backend;
+namespace Dy\Ring\Backend;
 
-use DY\Ring\Backend\Data\LocalDataStorage;
+use Dy\Ring\Backend\Data\LocalDataStorage;
 use Dy\Ring\Backend\Meta\LocalMetaStorage;
 
 final class LocalBackend extends AbstractBackend

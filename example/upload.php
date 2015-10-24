@@ -8,6 +8,9 @@
 require_once(__DIR__ . '/../vendor/autoload.php');
 
 $uploadedFile = new \Dy\Ring\Source\UploadedFile("data");
+$localBackend = new \Dy\Ring\Backend\LocalBackend("data");
+$localBackend->storeData($uploadedFile);
+$localBackend->storeMeta($uploadedFile);
 
 $data = array(
     'post' => $_POST,

@@ -6,8 +6,9 @@
  * Time: 下午4:59
  */
 
-namespace DY\Ring\Backend\Data;
+namespace Dy\Ring\Backend\Data;
 
+use Dy\Ring\Exception\InvalidArgumentException;
 use Dy\Ring\Source\AbstractSource;
 
 final class LocalDataStorage extends AbstractDataStorage
@@ -28,5 +29,10 @@ final class LocalDataStorage extends AbstractDataStorage
     public function store(AbstractSource $source)
     {
         // TODO: Implement store() method.
+        // check if base path exits and writable
+        if (!is_dir($this->basePath)) {
+            throw new InvalidArgumentException('base path: ' . $this->basePath . ' is not a directory!' .
+                'current working dir is ' . getcwd());
+        }
     }
 }
