@@ -13,4 +13,12 @@ use Dy\Ring\FileMetaTrait;
 abstract class AbstractSource
 {
     use FileMetaTrait;
+
+    /**
+     * @return string
+     */
+    public function getDisplayName()
+    {
+        return $this->getFileName();
+    }
 }

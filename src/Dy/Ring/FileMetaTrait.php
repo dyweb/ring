@@ -55,6 +55,11 @@ trait FileMetaTrait
     /**
      * @return string
      */
+    public abstract function getDisplayName();
+
+    /**
+     * @return string
+     */
     public abstract function getFileNameWithoutExt();
 
     /**
@@ -86,6 +91,7 @@ trait FileMetaTrait
     {
         return array(
             'name' => $this->getFileName(),
+            'display_name' => $this->getDisplayName(),
             'ext' => $this->getFileExtension(),
             'name_without_ext' => $this->getFileNameWithoutExt(),
             'path' => $this->getFilePath(),

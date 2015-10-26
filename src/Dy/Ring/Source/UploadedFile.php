@@ -31,6 +31,9 @@ class UploadedFile extends AbstractSource
         $this->mimeType = $fileInfo['type'];
     }
 
+    /**
+     * @return mixed
+     */
     public function getFileName()
     {
         return $this->fileName;
@@ -56,16 +59,25 @@ class UploadedFile extends AbstractSource
         return '';
     }
 
+    /**
+     * @return string
+     */
     public function getFilePath()
     {
         return $this->filePath;
     }
 
+    /**
+     * @return int
+     */
     public function getFileSize()
     {
         return $this->fileSize;
     }
 
+    /**
+     * @return string
+     */
     public function getMimeType()
     {
         return $this->mimeType;
