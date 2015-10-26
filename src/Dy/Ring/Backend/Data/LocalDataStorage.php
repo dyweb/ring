@@ -9,7 +9,9 @@
 namespace Dy\Ring\Backend\Data;
 
 use Dy\Ring\Exception\InvalidArgumentException;
+use Dy\Ring\Exception\RuntimeException;
 use Dy\Ring\Source\AbstractSource;
+use Dy\Ring\Source\UploadedFile;
 
 final class LocalDataStorage extends AbstractDataStorage
 {
@@ -23,7 +25,7 @@ final class LocalDataStorage extends AbstractDataStorage
      */
     public function __construct($basePath)
     {
-        $this->basePath = $basePath;
+        $this->basePath = rtrim($basePath, '/');
     }
 
     public function store(AbstractSource $source)
@@ -41,6 +43,28 @@ final class LocalDataStorage extends AbstractDataStorage
                 ' is not writable' .
                 'current working dir is ' . getcwd());
         }
+        // TODO: create a dir by date, and save the source file TODO: should be able to
+        // config this behaviour
+        // FIXME: currently just store in the path directly
+        if ($source instanceof UploadedFile) {
+            $src = $source->getFilePath();
+            $dst = $this->getDstPath($source);
+            $moved = @move_uploaded_file($src, $dst);
+            if (!$moved) {
+                throw new RuntimeException('can\'t move file from ' . $src . ' to ' . $dst);
+            }
+        }
+        // TODO: should return stored path
+    }
 
+    /**
+     * @TODO: allow hash file name, rolling folder by date etc
+     *
+     * @param AbstractSource $source
+     * @return string
+     */
+    private function getDstPath(AbstractSource $source)
+    {
+        return $this->basePath . '/' . $source->getFileName();
     }
 }

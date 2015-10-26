@@ -28,7 +28,7 @@ class SourceTest extends PHPUnit_Framework_TestCase
             'multipart' => array(
                 array(
                     'name' => 'data',
-                    'contents' => fopen(__DIR__ . '/images/normal.jpg', 'r')
+                    'contents' => fopen('tests/images/normal.jpg', 'r')
                 )
             )
         ));

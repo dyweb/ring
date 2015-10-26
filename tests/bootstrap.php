@@ -35,6 +35,9 @@ echo sprintf(
         date('r'),
         $host, $port, $pid) . PHP_EOL;
 
+// TODO: clean up the upload folder
+
+
 // shut down the server when exit
 register_shutdown_function(function () use ($pid) {
     echo sprintf('%s - Killing process with ID %d', date('r'), $pid) . PHP_EOL;
