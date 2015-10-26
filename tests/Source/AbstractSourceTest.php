@@ -10,7 +10,7 @@ namespace Dy\Ring\Test\Source;
 
 use Dy\Ring\Source\AbstractSource;
 
-class Dummy extends AbstractSource
+class DummySource extends AbstractSource
 {
     public function getFileName()
     {
@@ -52,7 +52,7 @@ class AbstractSourceTest extends \PHPUnit_Framework_TestCase
 {
     public function testDisplayName()
     {
-        $source = new Dummy();
+        $source = new DummySource();
         $this->assertEquals($source->getFileName(), $source->getDisplayName());
     }
 }

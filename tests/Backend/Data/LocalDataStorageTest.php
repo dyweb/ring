@@ -27,7 +27,7 @@ class LocalDataStorageTest extends \PHPUnit_Framework_TestCase
             )
         ));
         // check if the file exists
-        $fileExists = file_exists('example/data/normal.jpg');
-        $this->assertEquals(true, $fileExists);
+        $file = 'example/data/normal.jpg';
+        $this->assertFileExists($file);
     }
 }
