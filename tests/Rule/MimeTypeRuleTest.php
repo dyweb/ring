@@ -17,15 +17,22 @@ class MimeTypeRuleTest extends \PHPUnit_Framework_TestCase
     public function testEmptyAllowedTypes()
     {
         $this->setExpectedException('Dy\Ring\Exception\InvalidArgumentException');
-        $s = new LocalFile("tests/images/normal.jpg");
+        $s = new LocalFile('tests/images/normal.jpg');
         $r = new MimeTypeRule(array());
         $r->check($s);
     }
 
     public function  testConstructor()
     {
-        $s = new LocalFile("tests/images/normal.jpg");
+        $s = new LocalFile('tests/images/normal.jpg');
         $r = new MimeTypeRule(array('image/jpeg'));
+        $this->assertEquals(true, $r->check($s));
+    }
+
+    public function testStrtoLower()
+    {
+        $s = new LocalFile('tests/images/normal.jpg');
+        $r = new MimeTypeRule(array('Image/Jpeg'));
         $this->assertEquals(true, $r->check($s));
     }
 }
