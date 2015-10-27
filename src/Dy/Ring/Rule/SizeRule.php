@@ -38,7 +38,8 @@ final class SizeRule extends AbstractRule
             throw new InvalidArgumentException('maxSize cant\'t be 0');
         }
         if ($this->maxSize < $source->getFileSize()) {
-            throw new OutOfBoundsException('File size ' . $source->getFileSize() . ' exceeded maxSize ' . $this->maxSize);
+            throw new OutOfBoundsException('File size ' . $source->getFileSize() .
+                ' exceeded maxSize ' . $this->maxSize);
         }
         return true;
     }
