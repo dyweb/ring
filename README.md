@@ -15,7 +15,9 @@ Image & File upload component
 
 ## Usage
 
-TODO
+see [example/upload](example/upload.php) for how to use 
+
+- add `dyweb/ring` to your `composer.json`
 
 ## Development
 

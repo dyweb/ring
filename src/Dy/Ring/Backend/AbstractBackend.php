@@ -6,7 +6,7 @@
  * Time: 下午5:44
  */
 
-namespace DY\Ring\Backend;
+namespace Dy\Ring\Backend;
 
 use Dy\Ring\Backend\Meta\AbstractMetaStorage;
 use Dy\Ring\Source\AbstractSource;
