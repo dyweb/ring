@@ -34,4 +34,8 @@ class UploaderTest extends \PHPUnit_Framework_TestCase
         $uploader->addRule(new MimeTypeRule(array('mie/sheep')));
         $uploader->check();
     }
+
+    public function testUploaderExceptionCatch(){
+
+    }
 }
