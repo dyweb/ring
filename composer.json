@@ -2,7 +2,8 @@
     "name": "dyweb/ring",
     "require": {
         "php": ">=5.4.0",
-        "league/flysystem":"~1.0"
+        "league/flysystem":"~1.0",
+        "intervention/image":"^2.3"
     },
     "require-dev": {
         "phpunit/phpunit": "~4.4",

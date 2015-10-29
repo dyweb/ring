@@ -35,7 +35,13 @@ class UploaderTest extends \PHPUnit_Framework_TestCase
         $uploader->check();
     }
 
-    public function testUploaderExceptionCatch(){
-
+    public function testUploaderSave()
+    {
+        $local = new LocalBackend("example/data");
+        $source = new LocalFile("tests/images/normal.jpg");
+        $uploader = new Uploader($local, $source);
+        $uploader->addRule(new SizeRule(100000));
+        $uploader->check();
+        $uploader->save();
     }
 }

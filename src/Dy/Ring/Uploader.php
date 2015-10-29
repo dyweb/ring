@@ -59,4 +59,10 @@ class Uploader
         }
         return true;
     }
+
+    public function save()
+    {
+        $this->backend->storeData($this->source);
+        $this->backend->storeMeta($this->source);
+    }
 }
