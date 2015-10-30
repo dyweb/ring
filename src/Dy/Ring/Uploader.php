@@ -61,11 +61,19 @@ class Uploader
     }
 
     /**
-     * @TODO: returned stored source info
+     *
      */
     public function save()
     {
         $this->backend->storeData($this->source);
         $this->backend->storeMeta($this->source);
+    }
+
+    /**
+     * @return Output\AbstractOutput
+     */
+    public function getOutput()
+    {
+        return $this->backend->getOutput();
     }
 }

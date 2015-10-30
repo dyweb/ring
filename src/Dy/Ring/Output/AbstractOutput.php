@@ -11,5 +11,5 @@ namespace Dy\Ring\Output;
 
 abstract class AbstractOutput implements \JsonSerializable
 {
-    abstract public function getDownloadUrl();
+    abstract public function getUrl();
 }

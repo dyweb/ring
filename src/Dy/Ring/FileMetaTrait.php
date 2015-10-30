@@ -85,6 +85,7 @@ trait FileMetaTrait
     /**
      * @TODO test
      * @TODO for uploaded file, it will return tmp path, which is not safe.
+     * @TODO remove it
      *
      * @return array
      */

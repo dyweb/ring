@@ -9,6 +9,7 @@
 namespace Dy\Ring\Output;
 
 use Dy\Ring\FileMetaTrait;
+use Dy\Ring\Source\AbstractSource;
 
 class FileMetaOutput extends AbstractOutput
 {
@@ -59,10 +60,10 @@ class FileMetaOutput extends AbstractOutput
         // TODO: Implement getMimeType() method.
     }
 
-    public function getInfo()
+    public function getUrl()
     {
+        // TODO: Implement getUrl() method.
     }
-
 
     public function jsonSerialize()
     {

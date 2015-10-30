@@ -9,8 +9,9 @@
 namespace Dy\Ring\Backend;
 
 use Dy\Ring\Backend\Meta\AbstractMetaStorage;
-use Dy\Ring\Source\AbstractSource;
 use Dy\Ring\Backend\Data\AbstractDataStorage;
+use Dy\Ring\Source\AbstractSource;
+use Dy\Ring\Output\AbstractOutput;
 
 /**
  * Class AbstractBackend
@@ -37,6 +38,13 @@ abstract class AbstractBackend
         $this->dataStorage = $dataStorage;
         $this->metaStorage = $metaStorage;
     }
+
+    /**
+     * Return the output data of latest stored file
+     *
+     * @return AbstractOutput
+     */
+    abstract public function getOutput();
 
     /**
      * Store source data to backend

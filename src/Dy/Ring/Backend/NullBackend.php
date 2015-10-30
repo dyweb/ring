@@ -10,6 +10,8 @@ namespace DY\Ring\Backend;
 
 use DY\Ring\Backend\Data\NullDataStorage;
 use Dy\Ring\Backend\Meta\NullMetaStorage;
+use Dy\Ring\Exception\NotSupportedException;
+use Dy\Ring\Output\AbstractOutput;
 use Dy\Ring\Source\AbstractSource;
 
 final class NullBackend extends AbstractBackend
@@ -17,5 +19,10 @@ final class NullBackend extends AbstractBackend
     public function __construct(NullDataStorage $dataStorage, NullMetaStorage $metaStorage)
     {
         parent::__construct($dataStorage, $metaStorage);
+    }
+
+    public function getOutput()
+    {
+        throw new NotSupportedException('getOutput is not supported in NullBackend');
     }
 }

@@ -10,6 +10,7 @@ namespace Dy\Ring\Backend;
 
 use Dy\Ring\Backend\Data\LocalDataStorage;
 use Dy\Ring\Backend\Meta\LocalMetaStorage;
+use Dy\Ring\Output\AbstractOutput;
 
 final class LocalBackend extends AbstractBackend
 {
@@ -24,5 +25,10 @@ final class LocalBackend extends AbstractBackend
             new LocalDataStorage($basePath),
             new LocalMetaStorage($basePath)
         );
+    }
+
+    public function getOutput()
+    {
+        // TODO: Implement getOutput() method.
     }
 }
