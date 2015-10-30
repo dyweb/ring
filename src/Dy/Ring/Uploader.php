@@ -60,6 +60,9 @@ class Uploader
         return true;
     }
 
+    /**
+     * @TODO: returned stored source info
+     */
     public function save()
     {
         $this->backend->storeData($this->source);
