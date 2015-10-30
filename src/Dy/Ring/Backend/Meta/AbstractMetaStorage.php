@@ -9,9 +9,9 @@
 
 namespace Dy\Ring\Backend\Meta;
 
-use Dy\Ring\Source\AbstractSource;
+use Dy\Ring\Meta\AbstractMeta;
 
 abstract class AbstractMetaStorage
 {
-    abstract public function store(AbstractSource $source);
+    abstract public function store(AbstractMeta $meta);
 }

@@ -8,6 +8,8 @@
 
 namespace Dy\Ring\Backend\Meta;
 
+use Dy\Ring\Exception\NotSupportedException;
+use Dy\Ring\Meta\AbstractMeta;
 use Dy\Ring\Source\AbstractSource;
 
 /**
@@ -19,8 +21,8 @@ use Dy\Ring\Source\AbstractSource;
  */
 final class NullMetaStorage extends AbstractMetaStorage
 {
-    public function store(AbstractSource $source)
+    public function store(AbstractMeta $meta)
     {
-        // TODO: Implement store() method.
+        throw new NotSupportedException('null storage always support nothing ');
     }
 }

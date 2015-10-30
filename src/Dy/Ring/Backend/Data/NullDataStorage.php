@@ -23,4 +23,9 @@ final class NullDataStorage extends AbstractDataStorage
     {
         // TODO: Implement store() method.
     }
+
+    public function getMeta()
+    {
+        // TODO: Implement getMeta() method.
+    }
 }

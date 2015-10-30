@@ -65,8 +65,7 @@ class Uploader
      */
     public function save()
     {
-        $this->backend->storeData($this->source);
-        $this->backend->storeMeta($this->source);
+        $this->backend->store($this->source);
     }
 
     /**

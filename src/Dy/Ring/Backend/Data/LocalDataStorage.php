@@ -10,6 +10,7 @@ namespace Dy\Ring\Backend\Data;
 
 use Dy\Ring\Exception\InvalidArgumentException;
 use Dy\Ring\Exception\RuntimeException;
+use Dy\Ring\Meta\FileMeta;
 use Dy\Ring\Source\AbstractSource;
 use Dy\Ring\Source\UploadedFile;
 
@@ -30,7 +31,30 @@ final class LocalDataStorage extends AbstractDataStorage
 
     public function store(AbstractSource $source)
     {
-        // TODO: Implement store() method.
+        $this->checkDir();
+
+        // TODO: create a dir by date, and save the source file TODO: should be able to
+        // config this behaviour
+        // FIXME: currently just store in the path directly
+        if ($source instanceof UploadedFile) {
+            $src = $source->getFilePath();
+            $dst = $this->getDstPath($source);
+            $moved = @move_uploaded_file($src, $dst);
+            if (!$moved) {
+                throw new RuntimeException('can\'t move file from ' . $src . ' to ' . $dst);
+            }
+        }
+        // config the meta
+        $this->meta = new FileMeta($source);
+    }
+
+    public function getMeta()
+    {
+        return $this->meta;
+    }
+
+    private function checkDir()
+    {
         // check if base path exits and writable
         if (!is_dir($this->basePath)) {
             throw new InvalidArgumentException('base path: ' . $this->basePath .
@@ -43,18 +67,6 @@ final class LocalDataStorage extends AbstractDataStorage
                 ' is not writable' .
                 ' current working dir is ' . getcwd());
         }
-        // TODO: create a dir by date, and save the source file TODO: should be able to
-        // config this behaviour
-        // FIXME: currently just store in the path directly
-        if ($source instanceof UploadedFile) {
-            $src = $source->getFilePath();
-            $dst = $this->getDstPath($source);
-            $moved = @move_uploaded_file($src, $dst);
-            if (!$moved) {
-                throw new RuntimeException('can\'t move file from ' . $src . ' to ' . $dst);
-            }
-        }
-        // TODO: should return stored path
     }
 
     /**

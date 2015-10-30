@@ -8,6 +8,7 @@
 
 namespace Dy\Ring\Backend\Meta;
 
+use Dy\Ring\Meta\AbstractMeta;
 use Dy\Ring\Source\AbstractSource;
 
 final class LocalMetaStorage extends AbstractMetaStorage
@@ -25,7 +26,7 @@ final class LocalMetaStorage extends AbstractMetaStorage
         $this->basePath = $basePath;
     }
 
-    public function store(AbstractSource $source)
+    public function store(AbstractMeta $meta)
     {
         // TODO: Implement store() method.
     }

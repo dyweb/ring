@@ -10,8 +10,16 @@
 namespace DY\Ring\Backend\Data;
 
 use Dy\Ring\Source\AbstractSource;
+use Dy\Ring\Meta\AbstractMeta;
 
 abstract class AbstractDataStorage
 {
+    /**
+     * @var AbstractMeta
+     */
+    protected $meta;
+
     abstract public function store(AbstractSource $source);
+
+    abstract public function getMeta();
 }

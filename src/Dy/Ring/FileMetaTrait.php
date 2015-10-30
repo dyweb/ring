@@ -18,6 +18,11 @@ trait FileMetaTrait
     protected $fileName = null;
 
     /**
+     * @var string
+     */
+    protected $displayName = null;
+
+    /**
      * file name without extension
      *
      * @var string
@@ -50,37 +55,58 @@ trait FileMetaTrait
     /**
      * @return string
      */
-    public abstract function getFileName();
+    public function getFileName()
+    {
+        return $this->fileName;
+    }
 
     /**
      * @return string
      */
-    public abstract function getDisplayName();
+    public function getDisplayName()
+    {
+        return $this->displayName;
+    }
 
     /**
      * @return string
      */
-    public abstract function getFileNameWithoutExt();
+    public function getFileNameWithoutExt()
+    {
+        return substr($this->getFileName(), 0, -1 - strlen($this->getFileExtension()));
+    }
 
     /**
      * @return string
      */
-    public abstract function getFileExtension();
+    public function getFileExtension()
+    {
+        return $this->fileExtension;
+    }
 
     /**
      * @return string
      */
-    public abstract function getFilePath();
+    public function getFilePath()
+    {
+        return $this->filePath;
+    }
 
     /**
      * @return int
      */
-    public abstract function getFileSize();
+    public function getFileSize()
+    {
+        return $this->fileSize;
+    }
 
     /**
      * @return string
      */
-    public abstract function getMimeType();
+    public function getMimeType()
+    {
+        return $this->mimeType;
+    }
 
     /**
      * @TODO test

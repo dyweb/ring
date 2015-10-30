@@ -32,19 +32,6 @@ class UploadedFile extends AbstractSource
     }
 
     /**
-     * @return mixed
-     */
-    public function getFileName()
-    {
-        return $this->fileName;
-    }
-
-    public function getFileNameWithoutExt()
-    {
-        return substr($this->getFileName(), 0, -1 - strlen($this->getFileExtension()));
-    }
-
-    /**
      * @see http://stackoverflow.com/questions/173868/how-to-extract-a-file-extension-in-php
      *
      * @return string
@@ -57,29 +44,5 @@ class UploadedFile extends AbstractSource
             return substr($extWithDot, 1);
         }
         return '';
-    }
-
-    /**
-     * @return string
-     */
-    public function getFilePath()
-    {
-        return $this->filePath;
-    }
-
-    /**
-     * @return int
-     */
-    public function getFileSize()
-    {
-        return $this->fileSize;
-    }
-
-    /**
-     * @return string
-     */
-    public function getMimeType()
-    {
-        return $this->mimeType;
     }
 }

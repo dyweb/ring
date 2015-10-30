@@ -46,26 +46,9 @@ abstract class AbstractBackend
      */
     abstract public function getOutput();
 
-    /**
-     * Store source data to backend
-     *
-     * @param AbstractSource $source
-     * @return mixed
-     */
-    public function storeData(AbstractSource $source)
+    final public function store(AbstractSource $source)
     {
         $this->dataStorage->store($source);
-    }
-
-    /**
-     * Store source meta to backend
-     *
-     * @TODO: add throw not supported exception in comment
-     * @param AbstractSource $source
-     * @return mixed
-     */
-    public function storeMeta(AbstractSource $source)
-    {
-        $this->metaStorage->store($source);
+        $this->metaStorage->store($this->dataStorage->getMeta());
     }
 }

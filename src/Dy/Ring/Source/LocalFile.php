@@ -50,16 +50,6 @@ class LocalFile extends AbstractSource
     }
 
     /**
-     * @TODO: use pathinfo
-     *
-     * @return string
-     */
-    public function getFileNameWithoutExt()
-    {
-        return substr($this->getFileName(), 0, -1 - strlen($this->getFileExtension()));
-    }
-
-    /**
      * @see http://stackoverflow.com/questions/173868/how-to-extract-a-file-extension-in-php
      *
      * @return string
@@ -72,11 +62,6 @@ class LocalFile extends AbstractSource
             return substr($extWithDot, 1);
         }
         return '';
-    }
-
-    public function getFilePath()
-    {
-        return $this->filePath;
     }
 
     /**
