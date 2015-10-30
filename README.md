@@ -22,3 +22,13 @@ see [example/upload](example/upload.php) for how to use
 ## Development
 
 TODO
+
+## Roadmap
+
+- [x] file upload
+- [ ] image upload
+- [ ] image upload with thumbnail (thumbnail is treated as meta and store as base64)
+- [ ] store meta
+- [ ] list file
+- [ ] list file by auth
+- [ ] list file with thumbnail 

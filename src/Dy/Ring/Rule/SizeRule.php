@@ -43,4 +43,22 @@ final class SizeRule extends AbstractRule
         }
         return true;
     }
+
+    /**
+     * @param $num
+     * @return int
+     */
+    public static function kb($num)
+    {
+        return intval($num) * 1024;
+    }
+
+    /**
+     * @param $num
+     * @return int
+     */
+    public static function mb($num)
+    {
+        return intval($num) * 1024 * 1024;
+    }
 }
