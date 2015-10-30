@@ -8,7 +8,7 @@
  */
 namespace Dy\Ring\Meta;
 
-abstract class AbstractMeta
+abstract class AbstractMeta implements \JsonSerializable
 {
 
 }

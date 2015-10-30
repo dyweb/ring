@@ -68,11 +68,8 @@ class Uploader
         $this->backend->store($this->source);
     }
 
-    /**
-     * @return Output\AbstractOutput
-     */
-    public function getOutput()
+    public function getMeta()
     {
-        return $this->backend->getOutput();
+        return $this->backend->getMeta();
     }
 }

@@ -25,4 +25,14 @@ class FileMeta extends AbstractMeta
         $this->fileSize = $source->getFileSize();
         $this->mimeType = $source->getMimeType();
     }
+
+    public function jsonSerialize()
+    {
+        return array(
+            'name' => $this->getFileName(),
+            'size' => $this->getFileSize(),
+            'ext' => $this->getFileExtension(),
+            'name_without_ext' => $this->getFileNameWithoutExt()
+        );
+    }
 }

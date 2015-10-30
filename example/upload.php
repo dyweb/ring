@@ -16,6 +16,6 @@ $uploader->save();
 
 $data = array(
     'post' => $_POST,
-    'file' => $uploader->getOutput()
+    'file' => $uploader->getMeta()
 );
 echo json_encode($data);
