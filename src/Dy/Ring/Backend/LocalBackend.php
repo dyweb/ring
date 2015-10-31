@@ -10,6 +10,7 @@ namespace Dy\Ring\Backend;
 
 use Dy\Ring\Backend\Data\LocalDataStorage;
 use Dy\Ring\Backend\Meta\LocalMetaStorage;
+use Dy\Ring\Util\Url;
 
 final class LocalBackend extends AbstractBackend
 {
@@ -17,11 +18,14 @@ final class LocalBackend extends AbstractBackend
      *
      * @TODO use dependency injection
      * @param string $basePath
+     * @param string $baseUrl
      */
-    public function __construct($basePath)
+    public function __construct($basePath, $baseUrl)
     {
+        $d = new LocalDataStorage($basePath);
+        $d->setUrlUtil(new Url($basePath, $baseUrl));
         parent::__construct(
-            new LocalDataStorage($basePath),
+            $d,
             new LocalMetaStorage($basePath)
         );
     }

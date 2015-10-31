@@ -14,6 +14,10 @@ use Dy\Ring\Meta\FileMeta;
 use Dy\Ring\Source\AbstractSource;
 use Dy\Ring\Source\UploadedFile;
 
+/**
+ * Class LocalDataStorage
+ * @package Dy\Ring\Backend\Data
+ */
 final class LocalDataStorage extends AbstractDataStorage
 {
     /**
@@ -50,6 +54,7 @@ final class LocalDataStorage extends AbstractDataStorage
 
         // generate the meta, save as attribute
         $this->meta = new FileMeta($source);
+        $this->meta->setUrl($this->urlUtil->getUrl($source->getFilePath()));
     }
 
     public function realpath($path)

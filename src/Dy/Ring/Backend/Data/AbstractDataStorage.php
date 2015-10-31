@@ -11,13 +11,28 @@ namespace DY\Ring\Backend\Data;
 
 use Dy\Ring\Source\AbstractSource;
 use Dy\Ring\Meta\AbstractMeta;
+use Dy\Ring\Util\Url;
+use Dy\Ring\Meta\FileMeta;
 
 abstract class AbstractDataStorage
 {
     /**
-     * @var AbstractMeta
+     * @var AbstractMeta|FileMeta
      */
-    protected $meta;
+    protected $meta = null;
+
+    /**
+     * @var Url
+     */
+    protected $urlUtil = null;
+
+    /**
+     * @param Url $urlUtil
+     */
+    public function setUrlUtil($urlUtil)
+    {
+        $this->urlUtil = $urlUtil;
+    }
 
     abstract public function store(AbstractSource $source);
 

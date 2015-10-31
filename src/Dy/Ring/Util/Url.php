@@ -20,6 +20,20 @@ class Url
      */
     protected $baseUrl;
 
+    /**
+     * @param $basePath
+     * @param $baseUrl
+     */
+    public function __construct($basePath, $baseUrl)
+    {
+        $this->basePath = $basePath;
+        $this->baseUrl = $baseUrl;
+    }
+
+    /**
+     * @param string $path
+     * @return string
+     */
     public function getUrl($path)
     {
         $this->cleanBase();
@@ -30,40 +44,25 @@ class Url
     }
 
     /**
+     * @param string $path
+     * @return string
+     */
+    public static function cleanPath($path)
+    {
+        return rtrim($path, '/');
+    }
+
+    /**
+     * @TODO: self or static
      * @param string $from
      * @param string $to
      * @return string
      */
-    public function relative($from, $to)
+    public static function relative($from, $to)
     {
-        $from = $this->cleanPath($from);
-        $to = $this->cleanPath($to);
+        $from = self::cleanPath($from);
+        $to = self::cleanPath($to);
         return ltrim(substr($from, strlen($to)), '/');
-    }
-
-    /**
-     * @param string $basePath
-     */
-    public function setBasePath($basePath)
-    {
-        $this->basePath = $basePath;
-    }
-
-    /**
-     * @param string $baseUrl
-     */
-    public function setBaseUrl($baseUrl)
-    {
-        $this->baseUrl = $baseUrl;
-    }
-
-    /**
-     * @param string $path
-     * @return string
-     */
-    public function cleanPath($path)
-    {
-        return rtrim($path, '/');
     }
 
     protected function cleanBase()

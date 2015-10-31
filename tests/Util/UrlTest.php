@@ -18,24 +18,20 @@ class UrlTest extends \PHPUnit_Framework_TestCase
         // make the protect method public for test
         // http://stackoverflow.com/questions/11939166/how-to-override-trait-function-and-call-it-from-the-overriden-function
 
-        $url = new Url();
-        $this->assertEquals('a/b', $url->cleanPath('a/b/'));
-        $this->assertEquals('a/b', $url->cleanPath('a/b//'));
+        $this->assertEquals('a/b', Url::cleanPath('a/b/'));
+        $this->assertEquals('a/b', Url::cleanPath('a/b//'));
         // FIXME: it does not support .. and .
         // $this->assertEquals('b/c', $url->cleanPath('a/../b/c'));
     }
 
     public function testRelative()
     {
-        $url = new Url();
-        $this->assertEquals('b/c', $url->relative('/usr/share/www/b/c', '/usr/share/www'));
+        $this->assertEquals('b/c', Url::relative('/usr/share/www/b/c', '/usr/share/www'));
     }
 
     public function testGetUrl()
     {
-        $url = new Url();
-        $url->setBasePath('/usr/share/www');
-        $url->setBaseUrl('http://localhost:8000');
+        $url = new Url('/usr/share/www','http://localhost:8000');
         $this->assertEquals('http://localhost:8000/a.jpg', $url->getUrl('/usr/share/www/a.jpg'));
     }
 }

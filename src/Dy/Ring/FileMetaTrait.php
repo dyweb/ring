@@ -11,6 +11,11 @@ namespace Dy\Ring;
 trait FileMetaTrait
 {
     /**
+     * @var string
+     */
+    protected $url = null;
+
+    /**
      * file name including extension
      *
      * @var string
@@ -51,6 +56,22 @@ trait FileMetaTrait
      * @var string
      */
     protected $mimeType = null;
+
+    /**
+     * @param string $url
+     */
+    public function setUrl($url)
+    {
+        $this->url = $url;
+    }
+
+    /**
+     * @return string
+     */
+    public function getUrl()
+    {
+        return $this->url;
+    }
 
     /**
      * @return string
