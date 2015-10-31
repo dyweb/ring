@@ -29,6 +29,9 @@ final class LocalDataStorage extends AbstractDataStorage
         $this->basePath = rtrim($basePath, '/');
     }
 
+    /**
+     * @param AbstractSource $source
+     */
     public function store(AbstractSource $source)
     {
         $this->checkDir();
@@ -44,7 +47,8 @@ final class LocalDataStorage extends AbstractDataStorage
                 throw new RuntimeException('can\'t move file from ' . $src . ' to ' . $dst);
             }
         }
-        // config the meta
+
+        // generate the meta, save as attribute
         $this->meta = new FileMeta($source);
     }
 

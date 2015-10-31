@@ -9,6 +9,7 @@
 namespace Dy\Ring;
 
 use Dy\Ring\Backend\AbstractBackend;
+use Dy\Ring\Exception\NotSupportedException;
 use Dy\Ring\Rule\AbstractRule;
 use Dy\Ring\Source\AbstractSource;
 
@@ -49,6 +50,8 @@ class Uploader
     }
 
     /**
+     * Check if the source can pass all the rules
+     *
      * @return bool
      */
     public function check()
@@ -60,14 +63,22 @@ class Uploader
         return true;
     }
 
+    public function transform()
+    {
+        throw new NotSupportedException('transform is not supported, coming soon');
+    }
+
     /**
-     *
+     * Tell the backend to store data and then store meta
      */
     public function save()
     {
         $this->backend->store($this->source);
     }
 
+    /**
+     * @return Meta\AbstractMeta
+     */
     public function getMeta()
     {
         return $this->backend->getMeta();

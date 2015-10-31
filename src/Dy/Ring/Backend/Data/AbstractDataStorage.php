@@ -21,5 +21,8 @@ abstract class AbstractDataStorage
 
     abstract public function store(AbstractSource $source);
 
+    /**
+     * @return AbstractMeta
+     */
     abstract public function getMeta();
 }

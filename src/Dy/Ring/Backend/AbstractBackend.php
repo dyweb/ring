@@ -38,12 +38,18 @@ abstract class AbstractBackend
         $this->metaStorage = $metaStorage;
     }
 
+    /**
+     * @param AbstractSource $source
+     */
     final public function store(AbstractSource $source)
     {
         $this->dataStorage->store($source);
         $this->metaStorage->store($this->dataStorage->getMeta());
     }
 
+    /**
+     * @return \Dy\Ring\Meta\AbstractMeta
+     */
     final public function getMeta()
     {
         return $this->dataStorage->getMeta();
