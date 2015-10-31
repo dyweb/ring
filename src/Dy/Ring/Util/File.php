@@ -6,9 +6,9 @@
  * Time: 上午10:10
  */
 
-namespace Dy\Ring;
+namespace Dy\Ring\Util;
 
-class Util
+class File
 {
     /**
      * @param string $fileName

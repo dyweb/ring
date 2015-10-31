@@ -22,6 +22,12 @@ abstract class AbstractDataStorage
     abstract public function store(AbstractSource $source);
 
     /**
+     * @param string $path
+     * @return string
+     */
+    abstract public function realpath($path);
+
+    /**
      * @return AbstractMeta
      */
     abstract public function getMeta();

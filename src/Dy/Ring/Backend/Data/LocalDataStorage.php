@@ -52,6 +52,11 @@ final class LocalDataStorage extends AbstractDataStorage
         $this->meta = new FileMeta($source);
     }
 
+    public function realpath($path)
+    {
+        return realpath($path);
+    }
+
     public function getMeta()
     {
         return $this->meta;

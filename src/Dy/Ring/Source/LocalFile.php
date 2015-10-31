@@ -10,7 +10,7 @@ namespace Dy\Ring\Source;
 
 use Dy\Ring\Exception\InvalidArgumentException;
 use Dy\Ring\Exception\RuntimeException;
-use Dy\Ring\Util;
+use Dy\Ring\Util\File as FileUtil;
 
 /**
  * Class LocalFile
@@ -43,7 +43,7 @@ class LocalFile extends AbstractSource
     {
         if (!$this->fileName) {
             $this->fileName = pathinfo($this->filePath, PATHINFO_BASENAME);
-            $this->fileName = Util::filterFileName($this->fileName);
+            $this->fileName = FileUtil::filterFileName($this->fileName);
         }
 
         return $this->fileName;

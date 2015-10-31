@@ -28,4 +28,9 @@ final class NullDataStorage extends AbstractDataStorage
     {
         // TODO: Implement getMeta() method.
     }
+
+    public function realpath($path)
+    {
+        // TODO: Implement realpath() method.
+    }
 }

@@ -9,7 +9,7 @@
 namespace Dy\Ring\Source;
 
 use Dy\Ring\Exception\InvalidArgumentException;
-use Dy\Ring\Util;
+use Dy\Ring\Util\File as FileUtil;
 
 class UploadedFile extends AbstractSource
 {
@@ -25,7 +25,7 @@ class UploadedFile extends AbstractSource
 
         $fileInfo = $_FILES[$field];
 
-        $this->fileName = Util::filterFileName(pathinfo($fileInfo['name'], PATHINFO_BASENAME));
+        $this->fileName = FileUtil::filterFileName(pathinfo($fileInfo['name'], PATHINFO_BASENAME));
         $this->filePath = $fileInfo['tmp_name'];
         $this->fileSize = intval($fileInfo['size']);
         $this->mimeType = $fileInfo['type'];
