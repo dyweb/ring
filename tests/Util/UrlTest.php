@@ -6,23 +6,11 @@
  * Date: 15/10/31
  * Time: 上午11:02
  */
-namespace Dy\Test;
+namespace Dy\Ring\Test\Util;
 
-use Dy\Ring\UrlTrait;
+use Dy\Ring\Util\Url;
 
-class Url
-{
-    use UrlTrait {
-        cleanPath as cleanPathOriginal;
-    }
-
-    public function cleanPath($path)
-    {
-        return $this->cleanPathOriginal($path);
-    }
-}
-
-class UrlTraitTest extends \PHPUnit_Framework_TestCase
+class UrlTest extends \PHPUnit_Framework_TestCase
 {
     public function testCleanPath()
     {

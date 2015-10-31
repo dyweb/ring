@@ -6,9 +6,9 @@
  * Time: 上午10:09
  */
 
-namespace Dy\Ring;
+namespace Dy\Ring\Util;
 
-trait UrlTrait
+class Url
 {
     /**
      * @var string
@@ -61,7 +61,7 @@ trait UrlTrait
      * @param string $path
      * @return string
      */
-    protected function cleanPath($path)
+    public function cleanPath($path)
     {
         return rtrim($path, '/');
     }
